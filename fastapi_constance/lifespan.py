@@ -1,30 +1,19 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from .manager import ConstanceConfigManager
-
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from .wrapper import constance_config
-from typing import Callable, Awaitable
+from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi_constance.utils import sync_app_settings
+from fastapi_constance.models import ConstanceConfig
+from fastapi_constance.wrapper import ConstanceConfigWrapper
 
-
-async def sync_app_settings(database_session: AsyncSession):
-    manager = ConstanceConfigManager(database_session)
-    await manager.load_cache()
-
-    return manager
-
+constance_config = ConstanceConfigWrapper()
 
 @asynccontextmanager
-async def lifespan(app: FastAPI, session_factory: Callable[[], Awaitable] = None):
-    """
-    User provides session_factory (async session).
-    """
-    if session_factory is None:
-        raise RuntimeError("You must provide session_factory for lifespan")
+async def lifespan(app: FastAPI, session: AsyncSession, user_config: dict):
+    async with session.bind.begin() as conn:
+        await conn.run_sync(ConstanceConfig.metadata.create_all)
 
-    async with session_factory() as session:
-        manager = await sync_app_settings(session)
-        app.state.config_manager = manager
-        constance_config.set_manager(manager)
-        yield
+    manager = await sync_app_settings(session, user_config)
+    app.state.config_manager = manager
+    constance_config.set_manager(manager)
+
+    yield
