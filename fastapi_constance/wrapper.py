@@ -1,5 +1,7 @@
-from typing import Optional, Any
-from .exceptions import ImproperlyConfiguredError
+from typing import Any, Optional
+
+from fastapi_constance.exceptions import ImproperlyConfiguredError
+
 
 class ConstanceConfigWrapper:
     _manager: Optional[Any] = None
@@ -15,5 +17,3 @@ class ConstanceConfigWrapper:
         if key not in self._manager._config_cache:
             raise AttributeError(f"No such config key: {key}")
         return self._manager._config_cache[key]
-
-constance_config = ConstanceConfigWrapper()

@@ -1,10 +1,11 @@
-from typing import Any, Optional, Dict
+from typing import Any, Dict, Optional
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from .exceptions import NotSupportedTypeError, TypeMismatchError
-from .models import ConstanceConfig
+from fastapi_constance.exceptions import (NotSupportedTypeError,
+                                          TypeMismatchError)
+from fastapi_constance.models import ConstanceConfig
 
 
 class ConstanceConfigManager:
@@ -27,17 +28,20 @@ class ConstanceConfigManager:
 
     async def load_cache(self):
         """Main entry point: validate config, sync DB, populate cache."""
+
         self._validate_config()
         await self._sync_database_with_config()
         await self._populate_cache()
 
     def _validate_config(self):
         """Validate structure and type correctness of all config items."""
+
         self._validate_required_keys()
         self._validate_types_and_defaults()
 
     def _validate_required_keys(self):
         """Ensure each config entry includes required keys."""
+
         required_keys = ["value", "description", "type"]
         for key, data in self.config.items():
             for required_key in required_keys:
@@ -48,6 +52,7 @@ class ConstanceConfigManager:
 
     def _validate_types_and_defaults(self):
         """Ensure config values match their declared types and supported types."""
+
         for key, data in self.config.items():
             value = data["value"]
             value_type = data.get("type")
@@ -68,6 +73,7 @@ class ConstanceConfigManager:
 
     async def _sync_database_with_config(self):
         """Insert, update, or delete DB entries to match user config."""
+
         result = await self.database_session.execute(select(ConstanceConfig))
         database_configs = {conf.key: conf for conf in result.scalars().all()}
 
@@ -77,7 +83,9 @@ class ConstanceConfigManager:
 
             db_conf = database_configs.get(key)
             if db_conf:
-                await self._update_existing_config(db_conf, default_value, default_description)
+                await self._update_existing_config(
+                    db_conf, default_value, default_description
+                )
             else:
                 await self._create_new_config(key, default_value, default_description)
 
@@ -85,16 +93,22 @@ class ConstanceConfigManager:
 
     async def _remove_stale_database_configs(self, database_configs: dict):
         """Delete configs that exist in DB but not in config."""
+
         for key, db_conf in database_configs.items():
             if key not in self.config:
                 await self.database_session.delete(db_conf)
                 await self.database_session.commit()
                 self._config_cache.pop(key, None)
 
-    async def _update_existing_config(self, db_conf, default_value, default_description):
+    async def _update_existing_config(
+        self, db_conf, default_value, default_description
+    ):
         """Update DB record if description or default changes, respecting admin overrides."""
+
         try:
-            type_casted_value = self._type_cast_value(db_conf.value, type(default_value))
+            type_casted_value = self._type_cast_value(
+                db_conf.value, type(default_value)
+            )
         except (ValueError, TypeError):
             raise TypeMismatchError(
                 f"Value for key '{db_conf.key}' does not match type {type(default_value).__name__}"
@@ -107,7 +121,9 @@ class ConstanceConfigManager:
             updated = True
 
         if not db_conf.is_admin_modified:
-            if db_conf.default_value != str(default_value) or db_conf.value != str(default_value):
+            if db_conf.default_value != str(default_value) or db_conf.value != str(
+                default_value
+            ):
                 db_conf.default_value = str(default_value)
                 db_conf.value = str(default_value)
                 updated = True
@@ -122,8 +138,11 @@ class ConstanceConfigManager:
 
         self._config_cache[db_conf.key] = type_casted_value
 
-    async def _create_new_config(self, key: str, default_value: Any, default_description: Optional[str]):
+    async def _create_new_config(
+        self, key: str, default_value: Any, default_description: Optional[str]
+    ):
         """Insert a new config record into the DB and cache."""
+
         new_conf = ConstanceConfig(
             key=key,
             value=str(default_value),
@@ -137,6 +156,7 @@ class ConstanceConfigManager:
 
     async def _populate_cache(self):
         """Ensure cache is updated with all values from DB type-casted to correct types."""
+
         for key, data in self.config.items():
             cached_value = self._config_cache.get(key)
             value_type = data.get("type", str)
@@ -144,6 +164,7 @@ class ConstanceConfigManager:
 
     async def get(self, key: str) -> Any:
         """Retrieve a configuration value by key, type-casted to its declared type."""
+
         data = self.config.get(key)
         if not data:
             raise KeyError(f"{key} is not a valid config key")
@@ -154,6 +175,7 @@ class ConstanceConfigManager:
 
     async def set(self, key: str, value: Any, description: Optional[str] = None):
         """Update or create a configuration value in both DB and cache."""
+
         data = self.config.get(key)
         if not data:
             raise KeyError(f"{key} is not a valid config key")
@@ -184,8 +206,9 @@ class ConstanceConfigManager:
         await self.database_session.commit()
         self._config_cache[key] = value
 
-    def _type_cast_value(self, value: Any, value_type: type) -> Any:
+    def _type_cast_value(self, value: Any, value_type: type):
         """Type-cast stored string value back to its declared Python type, strictly handling bool."""
+
         if value is None:
             return None
 

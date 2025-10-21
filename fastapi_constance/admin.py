@@ -1,17 +1,11 @@
-from starlette.exceptions import HTTPException
-
+from fastapi import status
 from sqladmin import Admin, ModelView
-from .models import ConstanceConfig
-
+from starlette.exceptions import HTTPException
 from starlette.requests import Request
 
-from .config import CONFIG
-from fastapi import status
+from fastapi_constance.config import CONFIG
+from fastapi_constance.models import ConstanceConfig
 
-def register_admin(app, engine, authentication_backend=None):
-    admin = Admin(app, engine, authentication_backend=authentication_backend)
-    admin.add_view(ConstanceConfigAdmin)
-    return admin
 
 class ConstanceConfigAdmin(ModelView, model=ConstanceConfig):
     name = "Constance Config"
@@ -84,7 +78,9 @@ class ConstanceConfigAdmin(ModelView, model=ConstanceConfig):
 
 def setup_constance_admin(app, engine):
     if app is None or engine is None:
-        raise RuntimeError("FastAPI app and engine must be provided for SQLAdmin setup.")
+        raise RuntimeError(
+            "FastAPI app and engine must be provided for SQLAdmin setup."
+        )
 
     admin = Admin(app, engine)
     admin.add_view(ConstanceConfigAdmin)
