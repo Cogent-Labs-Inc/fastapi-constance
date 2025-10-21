@@ -12,7 +12,7 @@ authors = [{name="Aoun", email="zaoun123@gmail.com"}]
 requires-python = ">=3.8"
 
 dependencies = [
-    "fastapi>=0.100.0",
+    "fastapi>=0.115.0",
     "sqlalchemy>=2.0",
     "sqlmodel>=0.0.16",
     "sqladmin[full]>=0.20.0",
