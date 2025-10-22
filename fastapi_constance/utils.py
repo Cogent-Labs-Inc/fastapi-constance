@@ -1,4 +1,3 @@
-from sqladmin import Admin
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from fastapi_constance.admin import ConstanceConfigAdmin
@@ -13,7 +12,10 @@ async def sync_app_settings(
     return manager
 
 
-def register_admin(app, engine, authentication_backend=None):
-    admin = Admin(app, engine, authentication_backend=authentication_backend)
+def register_constance_admin(admin, user_config=None):
+    """
+    Register the ConstanceConfigAdmin view into an existing Admin instance.
+    """
+
+    ConstanceConfigAdmin.CONFIG = user_config or {}
     admin.add_view(ConstanceConfigAdmin)
-    return admin
