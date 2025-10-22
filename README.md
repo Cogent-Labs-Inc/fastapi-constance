@@ -52,7 +52,7 @@ USER_CONFIG = {
     },
     "FLOAT": {
         "value": 98.11,
-        "description": "Enable float implementation",
+        "description": "Sample float implementation.",
         "type": float,
     },
 }
