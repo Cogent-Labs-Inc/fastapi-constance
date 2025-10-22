@@ -1,5 +1,11 @@
 # FastAPI Constance
 
+**FastAPI Constance** is a dynamic configuration management system for FastAPI, inspired by Django Constance.
+It allows developers to define application settings in code, store them in the database, and access them easily via a global wrapper.
+
+> ⚠️ **Note:** FastAPI Constance only supports **SQLAlchemy** with **asynchronous sessions** (`AsyncSession`).
+
+The system ensures type safety, supports caching, and provides admin panel integration for managing configurations.
 **FastAPI Constance** is a dynamic configuration management system for FastAPI, inspired by Django Constance. It allows developers to define application settings in code, store them in the database, and access them easily via a global wrapper. The system ensures type safety, supports caching, and provides admin panel integration for managing configurations.
 
 ---
@@ -9,7 +15,7 @@
 - **Type-safe configuration**: Supports `int`, `float`, `str`, and `bool` types.
 - **Dynamic configuration management**: Define settings in Python code and sync them with the database.
 - **Admin panel integration**: Compatible with SQLAdmin for managing configurations.
-- **Global wrapper**: Access settings easily via `constance_config.MY_SETTING`.
+- **Global wrapper**: Access settings easily via `constance_config.INTEGER`.
 - **Caching**: Configurations are cached for fast access.
 - **Validation**: Ensures type correctness and prevents mismatches between code and database values.
 
@@ -28,19 +34,26 @@ pip install fastapi-constance
 ## Usage
 
 ### 1. Define Configuration
-Define your application settings in the `CONFIG` dictionary:
+Define your application settings in the `USER_CONFIG` dictionary:
 
 ```python
-CONFIG = {
-    "MY_SETTING": {
+# USER_CONFIG is just an example; users can define it anywhere and name it anything.
+
+USER_CONFIG = {
+    "INTEGER": {
         "value": 42,
-        "description": "An example setting",
+        "description": "Sample integer implementation.",
         "type": int,
     },
     "DEBUG_MODE": {
         "value": True,
-        "description": "Enable debug mode",
+        "description": "Enable debug mode.",
         "type": bool,
+    },
+    "FLOAT": {
+        "value": 98.11,
+        "description": "Enable float implementation",
+        "type": float,
     },
 }
 ```
@@ -51,14 +64,14 @@ Use the `lifespan` context manager to initialize the configuration system:
 ```python
 from fastapi import FastAPI
 from fastapi_constance.lifespan import lifespan
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
-app = FastAPI()
-
+# Database setup
 DATABASE_URL = "sqlite+aiosqlite:///./test.db"
 engine = create_async_engine(DATABASE_URL)
 AsyncSessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 
+# Attach lifespan to initialize Constance on startup
 app = FastAPI(lifespan=lambda app: lifespan(app, AsyncSessionLocal(), USER_CONFIG))
 ```
 
@@ -68,14 +81,10 @@ Access settings globally using the wrapper:
 ```python
 from fastapi_constance import constance_config
 
-print(constance_config.MY_SETTING)  # Outputs: 42
+print(constance_config.INTEGER)  # Output: 42
 ```
 
----
-
-## Admin Panel Integration
-
-### SQLAdmin
+### 4. SQLAdmin Panel Integration
 To use SQLAdmin for managing configurations:
 
 ```python
@@ -83,7 +92,7 @@ from sqladmin import Admin
 from fastapi_constance.utils import register_constance_admin
 
 admin = Admin(app, engine)
-register_constance_admin(admin, USER_CONFIG)
+register_constance_admin(admin, USER_CONFIG)  # Register config model in admin
 ```
 
 ---
@@ -114,12 +123,6 @@ The project requires the following dependencies:
 - **SQLAlchemy**: `>=2.0`
 - **SQLModel**: `>=0.0.16`
 - **SQLAdmin**: `[full]>=0.20.0`
-
----
-
-## License
-
-This project is licensed under the MIT License.
 
 ---
 
