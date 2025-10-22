@@ -33,10 +33,16 @@ pip install fastapi-constance
 
 ## Usage
 
-### 1. Define Configuration
-Define your application settings in the `USER_CONFIG` dictionary:
+
+### 1. Initialize the Config & Lifespan
+Use the `lifespan` context manager to initialize the configuration system:
 
 ```python
+from fastapi import FastAPI
+from fastapi_constance.lifespan import lifespan
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+
+
 # USER_CONFIG is just an example; users can define it anywhere and name it anything.
 
 USER_CONFIG = {
@@ -56,15 +62,6 @@ USER_CONFIG = {
         "type": float,
     },
 }
-```
-
-### 2. Initialize the Lifespan
-Use the `lifespan` context manager to initialize the configuration system:
-
-```python
-from fastapi import FastAPI
-from fastapi_constance.lifespan import lifespan
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 # Database setup
 DATABASE_URL = "sqlite+aiosqlite:///./test.db"
@@ -75,16 +72,7 @@ AsyncSessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 app = FastAPI(lifespan=lambda app: lifespan(app, AsyncSessionLocal(), USER_CONFIG))
 ```
 
-### 3. Access Configuration
-Access settings globally using the wrapper:
-
-```python
-from fastapi_constance import constance_config
-
-print(constance_config.INTEGER)  # Output: 42
-```
-
-### 4. SQLAdmin Panel Integration
+### 2. SQLAdmin Panel Integration
 To use SQLAdmin for managing configurations:
 
 ```python
@@ -94,6 +82,17 @@ from fastapi_constance.utils import register_constance_admin
 admin = Admin(app, engine)
 register_constance_admin(admin, USER_CONFIG)  # Register config model in admin
 ```
+
+
+### 3. Access Configuration
+Access settings globally using the wrapper:
+
+```python
+from fastapi_constance import constance_config
+
+print(constance_config.INTEGER)  # Output: 42
+```
+
 
 ---
 
@@ -122,7 +121,7 @@ The project requires the following dependencies:
 - **FastAPI**: `>=0.115.0`
 - **SQLAlchemy**: `>=2.0`
 - **SQLModel**: `>=0.0.16`
-- **SQLAdmin**: `[full]>=0.20.0`
+- **SQLAdmin**: `>=0.20.0`
 
 ---
 
