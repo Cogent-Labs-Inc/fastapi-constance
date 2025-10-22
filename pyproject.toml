@@ -18,6 +18,5 @@ dependencies = [
     "sqladmin[full]>=0.20.0",
 ]
 
-
 [project.urls]
 Homepage = "https://github.com/muhammadaounzaidi/fastapi-constance/"
