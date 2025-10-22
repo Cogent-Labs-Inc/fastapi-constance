@@ -83,7 +83,7 @@ from sqladmin import Admin
 from fastapi_constance.utils import register_constance_admin
 
 admin = Admin(app, engine)
-register_constance_admin(admin, CONFIG)
+register_constance_admin(admin, USER_CONFIG)
 ```
 
 ---
