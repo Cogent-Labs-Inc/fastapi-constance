@@ -10,10 +10,9 @@ class ConstanceConfigManager:
     """
     Pure Facade for dynamic app configuration.
 
-    Delegates all work to:
-      - ConstanceConfigValidator
-      - ConstanceConfigCacheManager
-      - ConstanceConfigDatabaseSyncService
+    Provides a simple interface to validate configuration,
+    sync it with the database, and cache values for quick access.
+    Delegates specific tasks to a validator, a cache manager, and a database sync service.
     """
 
     def __init__(self, database_session, config: dict):
