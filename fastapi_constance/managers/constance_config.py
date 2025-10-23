@@ -1,4 +1,3 @@
-from fastapi_constance.exceptions import TypeMismatchError
 from fastapi_constance.managers.cache import ConstanceConfigCacheManager
 from fastapi_constance.services.database_sync import \
     ConstanceConfigDatabaseSyncService
@@ -44,13 +43,6 @@ class ConstanceConfigManager:
         data = self.config.get(key)
         if not data:
             raise KeyError(f"{key} is not a valid config key")
-
-        value_type = data.get("type", str)
-        if not isinstance(value, value_type):
-            raise TypeMismatchError(
-                f"Expected {value_type.__name__} for key '{key}', got {type(value).__name__}"
-            )
-
-        await self.database_sync.set_config(key, value, data["value"], description)
-
-        self.cache.set(key, value)
+        await self.database_sync.set_value(
+            key, value, data["value"], self.cache, description
+        )

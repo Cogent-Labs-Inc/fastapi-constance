@@ -1,5 +1,6 @@
 from sqlalchemy.future import select
 
+from fastapi_constance.exceptions import TypeMismatchError
 from fastapi_constance.managers.cache import ConstanceConfigCacheManager
 from fastapi_constance.models import ConstanceConfig
 
@@ -119,3 +120,12 @@ class ConstanceConfigDatabaseSyncService:
                 await self.database_session.delete(db_conf)
                 await self.database_session.commit()
                 cache.remove(key)
+
+    async def set_value(self, key: str, value, default_value, cache, description=None):
+        if not isinstance(value, type(default_value)):
+            raise TypeMismatchError(
+                f"Expected {type(default_value).__name__} for key '{key}', got {type(value).__name__}"
+            )
+
+        await self.set_config(key, value, default_value, description)
+        cache.set(key, value)
