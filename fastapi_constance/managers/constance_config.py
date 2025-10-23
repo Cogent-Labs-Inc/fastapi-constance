@@ -25,7 +25,7 @@ class ConstanceConfigManager:
     async def load_cache(self):
         """Validate config, sync database, and populate cache."""
 
-        self.validator.validate_all(self.config)
+        self.validator.validate_config(self.config)
         await self.db_sync.sync(self.config, self.cache)
         self.cache.populate(self.config)
 

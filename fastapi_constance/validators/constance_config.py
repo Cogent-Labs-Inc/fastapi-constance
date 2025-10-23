@@ -5,7 +5,7 @@ from fastapi_constance.exceptions import (NotSupportedTypeError,
 class ConstanceConfigValidator:
     SUPPORTED_TYPES = (int, float, str, bool)
 
-    def validate_all(self, config: dict):
+    def validate_config(self, config: dict):
         """Validate all config entries for required keys and types."""
 
         self._validate_required_keys(config)
