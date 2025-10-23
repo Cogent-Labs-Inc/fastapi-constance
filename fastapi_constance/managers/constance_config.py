@@ -19,13 +19,13 @@ class ConstanceConfigManager:
         self.config = config
         self.validator = ConstanceConfigValidator()
         self.cache = ConstanceConfigCacheManager()
-        self.db_sync = ConstanceConfigDatabaseSyncService(database_session)
+        self.database_sync = ConstanceConfigDatabaseSyncService(database_session)
 
     async def load_cache(self):
         """Validate config, sync database, and populate cache."""
 
         self.validator.validate_config(self.config)
-        await self.db_sync.sync(self.config, self.cache)
+        await self.database_sync.sync(self.config, self.cache)
         self.cache.populate(self.config)
 
     async def get(self, key: str):
@@ -39,7 +39,7 @@ class ConstanceConfigManager:
         return self.cache.type_cast_value(cached, data.get("type", str))
 
     async def set(self, key: str, value, description=None):
-        """Set a config value in DB and cache."""
+        """Set a config value in database and cache."""
 
         data = self.config.get(key)
         if not data:
@@ -51,6 +51,6 @@ class ConstanceConfigManager:
                 f"Expected {value_type.__name__} for key '{key}', got {type(value).__name__}"
             )
 
-        await self.db_sync.set_config(key, value, data["value"], description)
+        await self.database_sync.set_config(key, value, data["value"], description)
 
         self.cache.set(key, value)
