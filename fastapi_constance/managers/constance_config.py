@@ -5,7 +5,7 @@ from sqlalchemy.future import select
 
 from fastapi_constance.exceptions import (NotSupportedTypeError,
                                           TypeMismatchError)
-from fastapi_constance.managers.cache import ConstanceCache
+from fastapi_constance.managers.cache import ConstanceCacheManager
 from fastapi_constance.models import ConstanceConfig
 
 
@@ -23,7 +23,7 @@ class ConstanceConfigManager:
 
         self.database_session = database_session
         self.config = config
-        self.cache = ConstanceCache()
+        self.cache = ConstanceCacheManager()
 
     async def load_cache(self):
         """
@@ -49,9 +49,11 @@ class ConstanceConfigManager:
 
         required_keys = ["value", "description", "type"]
         for key, data in self.config.items():
-            for rk in required_keys:
-                if rk not in data:
-                    raise KeyError(f"Missing '{rk}' for key '{key}' in config")
+            for required_key in required_keys:
+                if required_key not in data:
+                    raise KeyError(
+                        f"Missing '{required_key}' for key '{key}' in config"
+                    )
 
     def _validate_types(self):
         """

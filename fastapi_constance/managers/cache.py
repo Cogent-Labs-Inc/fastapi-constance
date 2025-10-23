@@ -3,7 +3,7 @@ from typing import Any, Dict
 from fastapi_constance.exceptions import TypeMismatchError
 
 
-class ConstanceCache:
+class ConstanceCacheManager:
     """
     Handles all cache-related responsibilities.
     """
