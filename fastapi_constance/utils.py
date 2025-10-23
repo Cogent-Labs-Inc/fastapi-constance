@@ -14,7 +14,7 @@ async def sync_app_settings(database_session: AsyncSession, config: dict):
     return manager
 
 
-def register_constance_admin(admin, user_config):
+def register_constance_admin(admin, user_config: dict):
     """
     Register the ConstanceConfigAdmin view into an existing Admin instance.
     """
