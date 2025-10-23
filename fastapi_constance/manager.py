@@ -37,7 +37,7 @@ class ConstanceConfigManager:
         """Validate structure and type correctness of all config items."""
 
         self._validate_required_keys()
-        self._validate_types_and_defaults()
+        self._validate_types()
 
     def _validate_required_keys(self):
         """Ensure each config entry includes required keys."""
@@ -50,7 +50,7 @@ class ConstanceConfigManager:
                         f"Missing '{required_key}' for key '{key}' in config"
                     )
 
-    def _validate_types_and_defaults(self):
+    def _validate_types(self):
         """Ensure config values match their declared types and supported types."""
 
         for key, data in self.config.items():
@@ -127,10 +127,9 @@ class ConstanceConfigManager:
                 db_conf.default_value = str(default_value)
                 db_conf.value = str(default_value)
                 updated = True
-        else:
-            if db_conf.default_value != str(default_value):
-                db_conf.default_value = str(default_value)
-                updated = True
+        elif db_conf.default_value != str(default_value):
+            db_conf.default_value = str(default_value)
+            updated = True
 
         if updated:
             self.database_session.add(db_conf)
