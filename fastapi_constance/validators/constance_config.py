@@ -12,6 +12,8 @@ class ConstanceConfigValidator:
         self._validate_types(config)
 
     def _validate_required_keys(self, config: dict):
+        """Ensure each config entry has required keys."""
+
         required_keys = ["value", "description", "type"]
         for key, data in config.items():
             for required_key in required_keys:
@@ -21,6 +23,8 @@ class ConstanceConfigValidator:
                     )
 
     def _validate_types(self, config: dict):
+        """Check that values match their declared types."""
+
         for key, data in config.items():
             value, value_type = data["value"], data.get("type")
             if value_type not in self.SUPPORTED_TYPES:
