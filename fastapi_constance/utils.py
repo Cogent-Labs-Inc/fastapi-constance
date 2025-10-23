@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from fastapi_constance.admin import ConstanceConfigAdmin
-from fastapi_constance.manager import ConstanceConfigManager
+from fastapi_constance.managers.constance_config import ConstanceConfigManager
 
 
 async def sync_app_settings(database_session: AsyncSession, config: dict):

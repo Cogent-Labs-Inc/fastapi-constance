@@ -4,6 +4,10 @@ from fastapi_constance.exceptions import ImproperlyConfiguredError
 
 
 class ConstanceConfigWrapper:
+    """
+    Provides attribute-style access to configuration values.
+    """
+
     _manager: Optional[Any] = None
 
     def set_manager(self, manager: Any):
@@ -14,7 +18,8 @@ class ConstanceConfigWrapper:
     def __getattr__(self, key: str):
         if self._manager is None:
             raise ImproperlyConfiguredError("Manager not configured")
-        if key not in self._manager._config_cache:
+
+        if key not in self._manager.cache._cache:
             raise AttributeError(f"No such config key: {key}")
 
-        return self._manager._config_cache[key]
+        return self._manager.cache.get(key)
