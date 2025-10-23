@@ -6,7 +6,7 @@ from fastapi_constance.exceptions import ImproperlyConfiguredError
 class ConstanceConfigWrapper:
     _manager: Optional[Any] = None
 
-    def set_manager(self, manager: Any) -> None:
+    def set_manager(self, manager: Any):
         if self._manager is not None:
             raise ImproperlyConfiguredError("Manager already configured")
         self._manager = manager

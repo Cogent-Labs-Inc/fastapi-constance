@@ -162,7 +162,7 @@ class ConstanceConfigManager:
             value_type = data.get("type", str)
             self._config_cache[key] = self._type_cast_value(cached_value, value_type)
 
-    async def get(self, key: str) -> Any:
+    async def get(self, key: str):
         """Retrieve a configuration value by key, type-casted to its declared type."""
 
         data = self.config.get(key)

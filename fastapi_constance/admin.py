@@ -30,14 +30,32 @@ class ConstanceConfigAdmin(ModelView, model=ConstanceConfig):
         ConstanceConfig.description,
     ]
 
+    column_labels = {
+        "key": "Key",
+        "default_value": "Default Value",
+        "value": "Value",
+        "description": "Description",
+    }
+
+    form_include_pk = True
     can_create = False
     can_delete = False
 
     form_excluded_columns = ["is_admin_modified"]
 
     form_widget_args = {
-        "default_value": {"readonly": True},
-        "description": {"readonly": True},
+        "default_value": {
+            "readonly": True,
+            "style": "background-color: #f0f0f0; color: #555; cursor: not-allowed;",
+        },
+        "description": {
+            "readonly": True,
+            "style": "background-color: #f0f0f0; color: #555; cursor: not-allowed;",
+        },
+        "key": {
+            "readonly": True,
+            "style": "background-color: #f0f0f0; color: #555; cursor: not-allowed;",
+        },
     }
 
     async def on_model_change(

@@ -4,4 +4,4 @@ __all__ = [
     "constance_config",
     "lifespan",
 ]
-__version__ = "0.1.1"
+__version__ = "0.0.1"

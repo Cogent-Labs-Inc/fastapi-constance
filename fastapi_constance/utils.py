@@ -4,9 +4,11 @@ from fastapi_constance.admin import ConstanceConfigAdmin
 from fastapi_constance.manager import ConstanceConfigManager
 
 
-async def sync_app_settings(
-    database_session: AsyncSession, config: dict
-) -> ConstanceConfigManager:
+async def sync_app_settings(database_session: AsyncSession, config: dict):
+    """
+    Initialize and load the application configuration cache.
+    """
+
     manager = ConstanceConfigManager(database_session, config)
     await manager.load_cache()
     return manager
