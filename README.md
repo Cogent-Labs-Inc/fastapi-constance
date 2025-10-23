@@ -3,7 +3,7 @@
 **FastAPI Constance** is a dynamic configuration management system for FastAPI, inspired by Django Constance.
 It allows developers to define application settings in code, store them in the database, and access them easily via a global wrapper.
 
-> ⚠️ **Note:** FastAPI Constance only supports **SQLAlchemy** with **asynchronous sessions** (`AsyncSession`).
+> ⚠️ **Note:** FastAPI Constance only supports SQLAdmin and **SQLAlchemy** with **asynchronous sessions** (`AsyncSession`).
 
 The system ensures type safety, supports caching, and provides admin panel integration for managing configurations.
 **FastAPI Constance** is a dynamic configuration management system for FastAPI, inspired by Django Constance. It allows developers to define application settings in code, store them in the database, and access them easily via a global wrapper. The system ensures type safety, supports caching, and provides admin panel integration for managing configurations.
@@ -39,7 +39,7 @@ Use the `lifespan` context manager to initialize the configuration system:
 
 ```python
 from fastapi import FastAPI
-from fastapi_constance.lifespan import lifespan
+from fastapi_constance import lifespan
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 
@@ -77,7 +77,7 @@ To use SQLAdmin for managing configurations:
 
 ```python
 from sqladmin import Admin
-from fastapi_constance.utils import register_constance_admin
+from fastapi_constance import register_constance_admin
 
 admin = Admin(app, engine)
 register_constance_admin(admin, USER_CONFIG)  # Register config model in admin
