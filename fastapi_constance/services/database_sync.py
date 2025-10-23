@@ -122,6 +122,10 @@ class ConstanceConfigDatabaseSyncService:
                 cache.remove(key)
 
     async def set_value(self, key: str, value, default_value, cache, description=None):
+        """
+        Set a configuration value in the database and update the cache.
+        """
+
         if not isinstance(value, type(default_value)):
             raise TypeMismatchError(
                 f"Expected {type(default_value).__name__} for key '{key}', got {type(value).__name__}"
