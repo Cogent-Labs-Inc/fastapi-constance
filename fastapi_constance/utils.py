@@ -11,6 +11,7 @@ async def sync_app_settings(database_session: AsyncSession, config: dict):
 
     manager = ConstanceConfigManager(database_session, config)
     await manager.load_cache()
+
     return manager
 
 
