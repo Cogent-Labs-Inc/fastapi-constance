@@ -16,4 +16,5 @@ class ConstanceConfigWrapper:
             raise ImproperlyConfiguredError("Manager not configured")
         if key not in self._manager._config_cache:
             raise AttributeError(f"No such config key: {key}")
+
         return self._manager._config_cache[key]
