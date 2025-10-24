@@ -7,7 +7,7 @@ name = "fastapi-constance"
 version = "0.0.1"
 description = "Dynamic configuration management for FastAPI, inspired by Django Constance."
 readme = "README.md"
-license = "MIT"
+license = { text = "MIT" }
 authors = [{name="Aoun", email="zaoun123@gmail.com"}]
 requires-python = ">=3.8"
 
