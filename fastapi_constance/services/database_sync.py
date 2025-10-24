@@ -38,22 +38,15 @@ class ConstanceConfigDatabaseSyncService:
         Create or update a config entry in the database.
         """
 
-        db_conf = await self.database_session.get(ConstanceConfig, key)
-        if db_conf:
-            db_conf.value = str(value)
-            db_conf.is_admin_modified = True
-            if description:
-                db_conf.description = description
-        else:
-            db_conf = ConstanceConfig(
-                key=key,
-                value=str(value),
-                default_value=str(default_value),
-                description=description,
-                is_admin_modified=True,
-            )
-            self.database_session.add(db_conf)
+        conf = ConstanceConfig(
+            key=key,
+            value=str(value),
+            default_value=str(default_value),
+            description=description,
+            is_admin_modified=True,
+        )
 
+        db_conf = await self.database_session.merge(conf)
         await self.database_session.commit()
         return db_conf
 
