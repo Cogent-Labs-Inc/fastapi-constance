@@ -1,8 +1,8 @@
-![Banner](assets/fastAPI_constance_banner.png)
+![🚀 Banner](assets/fastAPI_constance_banner.png)
 
 # FastAPI Constance
 
-**FastAPI Constance** is a dynamic configuration management system for FastAPI, inspired by Django Constance.
+**FastAPI Constance** is a dynamic configuration management system for FastAPI, inspired by Django Constance 🧩.
 It allows developers to define application settings in code, store them in the database, and access them easily via a global wrapper.
 
 > ⚠️ **Note:** FastAPI Constance only supports **SQLAdmin** and **SQLAlchemy** with **asynchronous sessions** (`AsyncSession`).
@@ -10,16 +10,16 @@ It allows developers to define application settings in code, store them in the d
 The system ensures type safety, supports caching, and provides admin panel integration for managing configurations.
 **FastAPI Constance** is a dynamic configuration management system for FastAPI, inspired by Django Constance. It allows developers to define application settings in code, store them in the database, and access them easily via a global wrapper. The system ensures type safety, supports caching, and provides admin panel integration for managing configurations.
 
-## Features
+## ✨ Features
 
-- **Type-safe configuration**: Supports `int`, `float`, `str`, and `bool` types.
-- **Dynamic configuration management**: Define settings in Python code and sync them with the database.
-- **Admin panel integration**: Compatible with SQLAdmin for managing configurations.
-- **Global wrapper**: Access settings easily via `constance_config.INTEGER`.
-- **Caching**: Configurations are cached for fast access.
-- **Validation**: Ensures type correctness and prevents mismatches between code and database values.
+- 🧠 **Type-safe configuration**: Supports `int`, `float`, `str`, and `bool` types.
+- 🔄 **Dynamic configuration management**: Define settings in Python code and sync them with the database.
+- 🧑‍💻 **Admin panel integration**: Compatible with SQLAdmin for managing configurations.
+- 🌍 **Global wrapper**: Access settings easily via `constance_config.INTEGER`.
+- ⚡ **Caching**: Configurations are cached for fast access.
+- ✅ **Validation**: Ensures type correctness and prevents mismatches between code and database values.
 
-## Installation
+## 📦 Installation
 
 Install the package using pip:
 
@@ -27,9 +27,9 @@ Install the package using pip:
 pip install fastapi-constance
 ```
 
-## Usage
+## 🚀 Usage
 
-### 1. Initialize the Config & Lifespan
+### 1️⃣ Initialize the Config & Lifespan
 
 Use the `lifespan` context manager to initialize the configuration system:
 
@@ -72,7 +72,7 @@ AsyncSessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 app = FastAPI(lifespan=lambda app: lifespan(app, AsyncSessionLocal(), USER_CONFIG))
 ```
 
-### 2. SQLAdmin Panel Integration
+### 2️⃣ SQLAdmin Panel Integration
 
 To use SQLAdmin for managing configurations:
 
@@ -84,7 +84,7 @@ admin = Admin(app, engine)
 register_constance_admin(admin, USER_CONFIG)  # Register config model in admin
 ```
 
-### 3. Access Configuration
+### 3️⃣ Access Configuration
 
 Access settings globally using the wrapper:
 
@@ -94,27 +94,30 @@ from fastapi_constance import constance_config
 print(constance_config.INTEGER)  # Output: 42
 ```
 
-> ⚠️ **Note:** Configuration values are **read-only**. You can **only get** values like `constance_config.INTEGER`, not set them manually (e.g., `constance_config.INTEGER = 50` is **not allowed**).
+> ⚠️ **Note:** Configuration values are **read-only**.
+> You can **only get** values like `constance_config.INTEGER`, not set them manually (e.g., `constance_config.INTEGER = 50` is **not allowed**).
 
-## Configuration Management
+## ⚙️ Configuration Management
 
-### Sync Settings
+### 🔁 Sync Settings
 
-The `ConstanceConfigManager` ensures that settings defined in code are synchronized with the database. It validates types, updates default values, and removes stale entries.
+The `ConstanceConfigManager` ensures that settings defined in code are synchronized with the database.
+It validates types, updates default values, and removes stale entries 🧹.
 
-### Wrapper
+### 🧰 Wrapper
 
-The `ConstanceConfigWrapper` provides a global interface for accessing settings. It ensures that the manager is properly configured before accessing any settings.
+The `ConstanceConfigWrapper` provides a global interface for accessing settings.
+It ensures that the manager is properly configured before accessing any settings.
 
-## Error Handling
+## 🚫 Error Handling
 
 The package includes custom exceptions for handling common issues:
 
-- **NotSupportedTypeError**: Raised when an unsupported type is used.
-- **TypeMismatchError**: Raised when a value does not match the expected type.
-- **ImproperlyConfiguredError**: Raised when the configuration manager is not properly initialized.
+- ❌ **NotSupportedTypeError**: Raised when an unsupported type is used.
+- ⚠️ **TypeMismatchError**: Raised when a value does not match the expected type.
+- 🧩 **ImproperlyConfiguredError**: Raised when the configuration manager is not properly initialized.
 
-## Dependencies
+## 🧱 Dependencies
 
 The project requires the following dependencies:
 
@@ -123,17 +126,17 @@ The project requires the following dependencies:
 - **SQLModel**: `>=0.0.16`
 - **SQLAdmin**: `>=0.20.0`
 
-## Code of Conduct
+## 🤝 Code of Conduct
 
 This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md).
-By participating, you are expected to uphold this code.
+By participating, you are expected to uphold this code 💬.
 
-## Contributing
+## 💡 Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines 🧩.
 
-## Author
+## 👨‍💻 Author
 
 **Muhammad Aoun Zaidi**
-Email: zaoun123@gmail.com
-GitHub: [FastAPI Constance](https://github.com/Cogent-Labs-Inc/fastapi-constance)
+📧 Email: [zaoun123@gmail.com](mailto:zaoun123@gmail.com)
+🐙 GitHub: [FastAPI Constance](https://github.com/Cogent-Labs-Inc/fastapi-constance)
