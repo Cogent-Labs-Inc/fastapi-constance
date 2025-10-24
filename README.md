@@ -3,7 +3,7 @@
 **FastAPI Constance** is a dynamic configuration management system for FastAPI, inspired by Django Constance.
 It allows developers to define application settings in code, store them in the database, and access them easily via a global wrapper.
 
-> ⚠️ **Note:** FastAPI Constance only supports SQLAdmin and **SQLAlchemy** with **asynchronous sessions** (`AsyncSession`).
+> ⚠️ **Note:** FastAPI Constance only supports **SQLAdmin** and **SQLAlchemy** with **asynchronous sessions** (`AsyncSession`).
 
 The system ensures type safety, supports caching, and provides admin panel integration for managing configurations.
 **FastAPI Constance** is a dynamic configuration management system for FastAPI, inspired by Django Constance. It allows developers to define application settings in code, store them in the database, and access them easily via a global wrapper. The system ensures type safety, supports caching, and provides admin panel integration for managing configurations.
