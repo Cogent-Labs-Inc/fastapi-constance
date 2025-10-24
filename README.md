@@ -12,12 +12,12 @@ The system ensures type safety, supports caching, and provides admin panel integ
 
 ## ✨ Features
 
-- 🧠 **Type-safe configuration**: Supports `int`, `float`, `str`, and `bool` types.
-- 🔄 **Dynamic configuration management**: Define settings in Python code and sync them with the database.
-- 🧑‍💻 **Admin panel integration**: Compatible with SQLAdmin for managing configurations.
-- 🌍 **Global wrapper**: Access settings easily via `constance_config.INTEGER`.
-- ⚡ **Caching**: Configurations are cached for fast access.
-- ✅ **Validation**: Ensures type correctness and prevents mismatches between code and database values.
+- **Type-safe configuration**: Supports `int`, `float`, `str`, and `bool` types.
+- **Dynamic configuration management**: Define settings in Python code and sync them with the database.
+- **Admin panel integration**: Compatible with SQLAdmin for managing configurations.
+- **Global wrapper**: Access settings easily via `constance_config.INTEGER`.
+- **Caching**: Configurations are cached for fast access.
+- **Validation**: Ensures type correctness and prevents mismatches between code and database values.
 
 ## 📦 Installation
 
@@ -99,12 +99,12 @@ print(constance_config.INTEGER)  # Output: 42
 
 ## ⚙️ Configuration Management
 
-### 🔁 Sync Settings
+### Sync Settings
 
 The `ConstanceConfigManager` ensures that settings defined in code are synchronized with the database.
 It validates types, updates default values, and removes stale entries 🧹.
 
-### 🧰 Wrapper
+### Wrapper
 
 The `ConstanceConfigWrapper` provides a global interface for accessing settings.
 It ensures that the manager is properly configured before accessing any settings.
@@ -113,9 +113,9 @@ It ensures that the manager is properly configured before accessing any settings
 
 The package includes custom exceptions for handling common issues:
 
-- ❌ **NotSupportedTypeError**: Raised when an unsupported type is used.
-- ⚠️ **TypeMismatchError**: Raised when a value does not match the expected type.
-- 🧩 **ImproperlyConfiguredError**: Raised when the configuration manager is not properly initialized.
+- **NotSupportedTypeError**: Raised when an unsupported type is used.
+- **TypeMismatchError**: Raised when a value does not match the expected type.
+- **ImproperlyConfiguredError**: Raised when the configuration manager is not properly initialized.
 
 ## 🧱 Dependencies
 
