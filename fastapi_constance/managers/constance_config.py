@@ -1,8 +1,6 @@
 from fastapi_constance.managers.cache import ConstanceConfigCacheManager
-from fastapi_constance.services.database_sync import \
-    ConstanceConfigDatabaseSyncService
-from fastapi_constance.validators.constance_config import \
-    ConstanceConfigValidator
+from fastapi_constance.services.database_sync import ConstanceConfigDatabaseSyncService
+from fastapi_constance.validators.constance_config import ConstanceConfigValidator
 
 
 class ConstanceConfigManager:
@@ -20,7 +18,7 @@ class ConstanceConfigManager:
         self.cache = ConstanceConfigCacheManager()
         self.database_sync = ConstanceConfigDatabaseSyncService(database_session)
 
-    async def load_cache(self):
+    async def initialize_config_system(self):
         """Validate config, sync database, and populate cache."""
 
         self.validator.validate_config(self.config)
@@ -43,6 +41,4 @@ class ConstanceConfigManager:
         data = self.config.get(key)
         if not data:
             raise KeyError(f"{key} is not a valid config key")
-        await self.database_sync.set_value(
-            key, value, data["value"], self.cache, description
-        )
+        await self.database_sync.set_value(key, value, data["value"], self.cache, description)
