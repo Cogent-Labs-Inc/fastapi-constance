@@ -8,8 +8,6 @@ It allows developers to define application settings in code, store them in the d
 The system ensures type safety, supports caching, and provides admin panel integration for managing configurations.
 **FastAPI Constance** is a dynamic configuration management system for FastAPI, inspired by Django Constance. It allows developers to define application settings in code, store them in the database, and access them easily via a global wrapper. The system ensures type safety, supports caching, and provides admin panel integration for managing configurations.
 
----
-
 ## Features
 
 - **Type-safe configuration**: Supports `int`, `float`, `str`, and `bool` types.
@@ -19,8 +17,6 @@ The system ensures type safety, supports caching, and provides admin panel integ
 - **Caching**: Configurations are cached for fast access.
 - **Validation**: Ensures type correctness and prevents mismatches between code and database values.
 
----
-
 ## Installation
 
 Install the package using pip:
@@ -28,8 +24,6 @@ Install the package using pip:
 ```bash
 pip install fastapi-constance
 ```
-
----
 
 ## Usage
 
@@ -100,8 +94,6 @@ print(constance_config.INTEGER)  # Output: 42
 
 > ⚠️ **Note:** Configuration values are **read-only**. You can **only get** values like `constance_config.INTEGER`, not set them manually (e.g., `constance_config.INTEGER = 50` is **not allowed**).
 
----
-
 ## Configuration Management
 
 ### Sync Settings
@@ -112,8 +104,6 @@ The `ConstanceConfigManager` ensures that settings defined in code are synchroni
 
 The `ConstanceConfigWrapper` provides a global interface for accessing settings. It ensures that the manager is properly configured before accessing any settings.
 
----
-
 ## Error Handling
 
 The package includes custom exceptions for handling common issues:
@@ -121,8 +111,6 @@ The package includes custom exceptions for handling common issues:
 - **NotSupportedTypeError**: Raised when an unsupported type is used.
 - **TypeMismatchError**: Raised when a value does not match the expected type.
 - **ImproperlyConfiguredError**: Raised when the configuration manager is not properly initialized.
-
----
 
 ## Dependencies
 
@@ -132,8 +120,6 @@ The project requires the following dependencies:
 - **SQLAlchemy**: `>=2.0`
 - **SQLModel**: `>=0.0.16`
 - **SQLAdmin**: `>=0.20.0`
-
----
 
 ## Author
 
