@@ -60,19 +60,14 @@ class ConstanceConfigAdmin(ModelView, model=ConstanceConfig):
 
     async def on_model_change(
         self,
-        constance_config: dict,
+        constance_config_data: dict,
         model: ConstanceConfig,
         is_created: bool,
         request: Request,
     ):
-        """
-        Called before saving a ConstanceConfig instance in SQLAdmin.
-        Validates that the new value matches the expected type defined in CONFIG.
-        """
-
-        if not is_created and "value" in constance_config:
-            key = constance_config.get("key") or model.key
-            new_value = constance_config.get("value")
+        if not is_created and "value" in constance_config_data:
+            key = constance_config_data.get("key") or model.key
+            new_value = constance_config_data.get("value")
 
             config_type = self.CONFIG.get(key)
             if not config_type:
@@ -82,28 +77,25 @@ class ConstanceConfigAdmin(ModelView, model=ConstanceConfig):
                 )
 
             expected_type = config_type.get("type", str)
-
             if expected_type is bool:
                 if new_value not in ("True", "False"):
                     raise HTTPException(
                         status_code=status.HTTP_400_BAD_REQUEST,
-                        detail=(
-                            f"Invalid value for '{key}'. "
-                            f"Expected 'True' or 'False', got '{new_value}'."
-                        ),
+                        detail=f"Invalid value for '{key}'. Expected 'True' or 'False'.",
                     )
+                casted_value = new_value == "True"
             else:
                 try:
-                    expected_type(new_value)
+                    casted_value = expected_type(new_value)
                 except (ValueError, TypeError):
                     raise HTTPException(
                         status_code=status.HTTP_400_BAD_REQUEST,
-                        detail=(
-                            f"Invalid type for '{key}'. "
-                            f"Expected {expected_type.__name__}, got value '{new_value}'."
-                        ),
+                        detail=f"Invalid type for '{key}'. Expected {expected_type.__name__}.",
                     )
 
-            constance_config["is_admin_modified"] = True
+            constance_config_data["is_admin_modified"] = True
+            from fastapi_constance.lifespan import constance_config
 
-        await super().on_model_change(constance_config, model, is_created, request)
+            constance_config.set_value(key, casted_value)
+
+        await super().on_model_change(constance_config_data, model, is_created, request)
