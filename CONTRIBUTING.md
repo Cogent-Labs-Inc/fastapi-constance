@@ -2,8 +2,6 @@
 
 Thank you for your interest in contributing to **FastAPI Constance**! This document outlines the guidelines for contributing to this Python package.
 
----
-
 ## How to Contribute
 
 ### 1. Fork and Clone the Repository
@@ -11,7 +9,7 @@ Thank you for your interest in contributing to **FastAPI Constance**! This docum
 - Fork the repository to your GitHub account.
 - Clone your forked repository to your local machine:
   ```bash
-  git clone https://github.com/<your-username>/fastapi-constance.git
+  git clone https://github.com/Cogent-Labs-Inc/fastapi-constance.git
   cd fastapi-constance
   ```
 
