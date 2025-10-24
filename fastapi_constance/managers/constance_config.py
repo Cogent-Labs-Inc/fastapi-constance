@@ -91,11 +91,18 @@ class ConstanceConfigManager:
         Remove configurations from the database that are not defined in the user config.
         """
 
+        to_remove = []
+
         for key, db_conf in database_configs.items():
             if key not in self.config:
-                await self.database_session.delete(db_conf)
-                await self.database_session.commit()
-                self.cache.remove(key)
+                to_remove.append((key, db_conf))
+
+        for key, db_conf in to_remove:
+            await self.database_session.delete(db_conf)
+            self.cache.remove(key)
+
+        if to_remove:
+            await self.database_session.commit()
 
     async def _update_existing_config(self, db_conf, default_value, default_desc):
         """
