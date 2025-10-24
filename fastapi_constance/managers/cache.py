@@ -34,30 +34,32 @@ class ConstanceConfigCacheManager:
 
     def type_cast_value(self, value: Any, value_type: type) -> Any:
         """
-        Strictly handle type casting, especially for bools.
+        Cast a value to the specified type, delegating boolean casting separately.
         """
 
         if value is None:
             return None
 
         if value_type is bool:
-            if isinstance(value, str):
-                if value == "True":
-                    return True
-                elif value == "False":
-                    return False
-                raise TypeMismatchError(
-                    f"Cannot type cast '{value}' to bool. Must be 'True' or 'False'."
-                )
-            if isinstance(value, bool):
-                return value
-            raise TypeMismatchError(
-                f"Cannot type cast '{value}' of type {type(value).__name__} to bool."
-            )
+            return self._cast_to_bool(value)
 
         try:
             return value_type(value)
         except (ValueError, TypeError):
-            raise TypeMismatchError(
-                f"Cannot type cast value '{value}' to {value_type.__name__}"
-            )
+            raise TypeMismatchError(f"Cannot type cast value '{value}' to {value_type.__name__}")
+
+    def _cast_to_bool(self, value: Any) -> bool:
+        """
+        Handle strict boolean type casting.
+        Accepts True/False (bool) or "True"/"False" (str).
+        """
+
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, str):
+            if value == "True":
+                return True
+            elif value == "False":
+                return False
+            raise TypeMismatchError(f"Cannot type cast '{value}' to bool. Must be 'True' or 'False'.")
+        raise TypeMismatchError(f"Cannot type cast '{value}' of type {type(value).__name__} to bool.")
