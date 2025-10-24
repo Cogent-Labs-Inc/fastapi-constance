@@ -33,8 +33,8 @@ pip install fastapi-constance
 
 ## Usage
 
-
 ### 1. Initialize the Config & Lifespan
+
 Use the `lifespan` context manager to initialize the configuration system:
 
 ```python
@@ -73,6 +73,7 @@ app = FastAPI(lifespan=lambda app: lifespan(app, AsyncSessionLocal(), USER_CONFI
 ```
 
 ### 2. SQLAdmin Panel Integration
+
 To use SQLAdmin for managing configurations:
 
 ```python
@@ -83,8 +84,8 @@ admin = Admin(app, engine)
 register_constance_admin(admin, USER_CONFIG)  # Register config model in admin
 ```
 
-
 ### 3. Access Configuration
+
 Access settings globally using the wrapper:
 
 ```python
@@ -93,15 +94,18 @@ from fastapi_constance import constance_config
 print(constance_config.INTEGER)  # Output: 42
 ```
 
+> ⚠️ **Note:** Configuration values are **read-only**. You can **only get** values like `constance_config.INTEGER`, not set them manually (e.g., `constance_config.INTEGER = 50` is **not allowed**).
 
 ---
 
 ## Configuration Management
 
 ### Sync Settings
+
 The `ConstanceConfigManager` ensures that settings defined in code are synchronized with the database. It validates types, updates default values, and removes stale entries.
 
 ### Wrapper
+
 The `ConstanceConfigWrapper` provides a global interface for accessing settings. It ensures that the manager is properly configured before accessing any settings.
 
 ---
@@ -109,6 +113,7 @@ The `ConstanceConfigWrapper` provides a global interface for accessing settings.
 ## Error Handling
 
 The package includes custom exceptions for handling common issues:
+
 - **NotSupportedTypeError**: Raised when an unsupported type is used.
 - **TypeMismatchError**: Raised when a value does not match the expected type.
 - **ImproperlyConfiguredError**: Raised when the configuration manager is not properly initialized.
@@ -118,6 +123,7 @@ The package includes custom exceptions for handling common issues:
 ## Dependencies
 
 The project requires the following dependencies:
+
 - **FastAPI**: `>=0.115.0`
 - **SQLAlchemy**: `>=2.0`
 - **SQLModel**: `>=0.0.16`
