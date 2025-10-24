@@ -34,7 +34,7 @@ class ConstanceConfigCacheManager:
 
     def type_cast_value(self, value: Any, value_type: type) -> Any:
         """
-        Cast a value to the specified type, delegating boolean casting separately.
+        Strictly handle type casting, especially for bools.
         """
 
         if value is None:
