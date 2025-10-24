@@ -61,6 +61,11 @@ USER_CONFIG = {
         "description": "Sample float implementation.",
         "type": float,
     },
+    "STR": {
+        "value": "FastAPI Constance",
+        "description": "Sample string implementation.",
+        "type": str,
+    },
 }
 
 # Database setup
