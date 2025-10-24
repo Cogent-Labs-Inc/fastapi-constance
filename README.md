@@ -44,7 +44,6 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 
 # USER_CONFIG is just an example; users can define it anywhere and name it anything.
-
 USER_CONFIG = {
     "INTEGER": {
         "value": 42,
