@@ -65,6 +65,11 @@ class ConstanceConfigAdmin(ModelView, model=ConstanceConfig):
         is_created: bool,
         request: Request,
     ):
+        """
+        Called before saving a ConstanceConfig instance in SQLAdmin.
+        Validates that the new value matches the expected type defined in CONFIG.
+        """
+
         if not is_created and "value" in constance_config_data:
             key = constance_config_data.get("key") or model.key
             new_value = constance_config_data.get("value")
