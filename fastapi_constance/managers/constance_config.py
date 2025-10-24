@@ -3,9 +3,8 @@ from typing import Any, Dict, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from fastapi_constance.exceptions import (NotSupportedTypeError,
-                                          TypeMismatchError)
-from fastapi_constance.managers.cache import ConstanceCacheManager
+from fastapi_constance.exceptions import NotSupportedTypeError, TypeMismatchError
+from fastapi_constance.managers.cache import ConstanceConfigCacheManager
 from fastapi_constance.models import ConstanceConfig
 
 
@@ -23,7 +22,7 @@ class ConstanceConfigManager:
 
         self.database_session = database_session
         self.config = config
-        self.cache = ConstanceCacheManager()
+        self.cache = ConstanceConfigCacheManager()
 
     async def load_cache(self):
         """
@@ -51,9 +50,7 @@ class ConstanceConfigManager:
         for key, data in self.config.items():
             for required_key in required_keys:
                 if required_key not in data:
-                    raise KeyError(
-                        f"Missing '{required_key}' for key '{key}' in config"
-                    )
+                    raise KeyError(f"Missing '{required_key}' for key '{key}' in config")
 
     def _validate_types(self):
         """
@@ -63,13 +60,10 @@ class ConstanceConfigManager:
         for key, data in self.config.items():
             value, value_type = data["value"], data.get("type")
             if value_type not in self.SUPPORTED_TYPES:
-                raise NotSupportedTypeError(
-                    f"Type {value_type.__name__} not supported for key '{key}'"
-                )
+                raise NotSupportedTypeError(f"Type {value_type.__name__} not supported for key '{key}'")
             if not isinstance(value, value_type):
                 raise TypeMismatchError(
-                    f"Default value for '{key}' must be of type {value_type.__name__}, "
-                    f"got {type(value).__name__}"
+                    f"Default value for '{key}' must be of type {value_type.__name__}, " f"got {type(value).__name__}"
                 )
 
     async def _sync_database_with_config(self):
@@ -118,9 +112,7 @@ class ConstanceConfigManager:
             updated = True
 
         if not db_conf.is_admin_modified:
-            if db_conf.default_value != str(default_value) or db_conf.value != str(
-                default_value
-            ):
+            if db_conf.default_value != str(default_value) or db_conf.value != str(default_value):
                 db_conf.default_value = db_conf.value = str(default_value)
                 updated = True
         elif db_conf.default_value != str(default_value):
@@ -173,9 +165,7 @@ class ConstanceConfigManager:
 
         value_type = data.get("type", str)
         if not isinstance(value, value_type):
-            raise TypeMismatchError(
-                f"Expected {value_type.__name__} for key '{key}', got {type(value).__name__}"
-            )
+            raise TypeMismatchError(f"Expected {value_type.__name__} for key '{key}', got {type(value).__name__}")
 
         db_conf = await self.database_session.get(ConstanceConfig, key)
         if db_conf:
