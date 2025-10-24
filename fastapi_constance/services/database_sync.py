@@ -31,19 +31,14 @@ class ConstanceConfigDatabaseSyncService:
 
         await self._remove_stale(config, db_configs, cache)
 
-    async def get_config(self, key: str):
-        """
-        Retrieve a config entry from the database by key.
-        """
-
-        return await self.database_session.get(ConstanceConfig, key)
+        await self.database_session.commit()
 
     async def set_config(self, key: str, value, default_value, description=None):
         """
         Create or update a config entry in the database.
         """
 
-        db_conf = await self.get_config(key)
+        db_conf = await self.database_session.get(ConstanceConfig, key)
         if db_conf:
             db_conf.value = str(value)
             db_conf.is_admin_modified = True
@@ -83,7 +78,6 @@ class ConstanceConfigDatabaseSyncService:
 
         if updated:
             self.database_session.add(db_conf)
-            await self.database_session.commit()
 
         cache.set(db_conf.key, cache.type_cast_value(db_conf.value, type(value)))
 
@@ -100,7 +94,6 @@ class ConstanceConfigDatabaseSyncService:
             is_admin_modified=False,
         )
         self.database_session.add(new_conf)
-        await self.database_session.commit()
         cache.set(key, value)
 
     async def _remove_stale(self, config, db_configs, cache: ConstanceConfigCacheManager):
@@ -115,10 +108,8 @@ class ConstanceConfigDatabaseSyncService:
                 await self.database_session.delete(db_conf)
                 to_remove.append(key)
 
-        if to_remove:
-            await self.database_session.commit()
-            for key in to_remove:
-                cache.remove(key)
+        for key in to_remove:
+            cache.remove(key)
 
     async def set_value(self, key: str, value, default_value, cache, description=None):
         """
