@@ -126,6 +126,10 @@ The project requires the following dependencies:
 This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md).
 By participating, you are expected to uphold this code.
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines.
+
 ## Author
 
 **Muhammad Aoun Zaidi**
