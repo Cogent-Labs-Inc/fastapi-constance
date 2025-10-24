@@ -121,8 +121,13 @@ The project requires the following dependencies:
 - **SQLModel**: `>=0.0.16`
 - **SQLAdmin**: `>=0.20.0`
 
+## Code of Conduct
+
+This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md).
+By participating, you are expected to uphold this code.
+
 ## Author
 
 **Muhammad Aoun Zaidi**
 Email: zaoun123@gmail.com
-GitHub: [FastAPI Constance](https://github.com/muhammadaounzaidi/fastapi-constance/)
+GitHub: [FastAPI Constance](https://github.com/Cogent-Labs-Inc/fastapi-constance)
