@@ -134,9 +134,3 @@ By participating, you are expected to uphold this code 💬.
 ## 💡 Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines 🧩.
-
-## 👨‍💻 Author
-
-**Muhammad Aoun Zaidi**
-📧 Email: [zaoun123@gmail.com](mailto:zaoun123@gmail.com)
-🐙 GitHub: [FastAPI Constance](https://github.com/Cogent-Labs-Inc/fastapi-constance)

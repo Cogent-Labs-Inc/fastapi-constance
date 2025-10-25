@@ -8,7 +8,6 @@ version = "0.0.1"
 description = "Dynamic configuration management for FastAPI, inspired by Django Constance."
 readme = "README.md"
 license = { text = "MIT" }
-authors = [{name="Aoun", email="zaoun123@gmail.com"}]
 requires-python = ">=3.8"
 
 dependencies = [
@@ -19,4 +18,4 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/muhammadaounzaidi/fastapi-constance/"
+Homepage = "https://github.com/Cogent-Labs-Inc/fastapi-constance/"
