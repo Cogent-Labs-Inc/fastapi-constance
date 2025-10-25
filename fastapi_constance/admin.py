@@ -60,7 +60,7 @@ class ConstanceConfigAdmin(ModelView, model=ConstanceConfig):
 
     async def on_model_change(
         self,
-        constance_config_data: dict,
+        constance_config: dict,
         model: ConstanceConfig,
         is_created: bool,
         request: Request,
@@ -70,9 +70,9 @@ class ConstanceConfigAdmin(ModelView, model=ConstanceConfig):
         Validates that the new value matches the expected type defined in CONFIG.
         """
 
-        if not is_created and "value" in constance_config_data:
-            key = constance_config_data.get("key") or model.key
-            new_value = constance_config_data.get("value")
+        if not is_created and "value" in constance_config:
+            key = constance_config.get("key") or model.key
+            new_value = constance_config.get("value")
 
             config_type = self.CONFIG.get(key)
             if not config_type:
@@ -98,9 +98,9 @@ class ConstanceConfigAdmin(ModelView, model=ConstanceConfig):
                         detail=f"Invalid type for '{key}'. Expected {expected_type.__name__}.",
                     )
 
-            constance_config_data["is_admin_modified"] = True
-            from fastapi_constance.lifespan import constance_config
+            constance_config["is_admin_modified"] = True
+            from fastapi_constance.lifespan import constance_config as lifespan_constance_config
 
-            constance_config.set_value(key, casted_value)
+            lifespan_constance_config.set_value(key, casted_value)
 
-        await super().on_model_change(constance_config_data, model, is_created, request)
+        await super().on_model_change(constance_config, model, is_created, request)
