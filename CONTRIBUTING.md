@@ -1,44 +1,50 @@
 # Contributing to FastAPI Constance
 
-Thank you for your interest in contributing to **FastAPI Constance**! This document outlines the guidelines for contributing to this Python package.
+Thank you for your interest in contributing to **FastAPI Constance**!
+This document outlines the guidelines for contributing to this Python package.
 
-## How to Contribute
-
-### 1. Fork and Clone the Repository
+## 1. Fork and Clone the Repository
 
 - Fork the repository to your GitHub account.
 - Clone your forked repository to your local machine:
+
   ```bash
   git clone https://github.com/Cogent-Labs-Inc/fastapi-constance.git
   cd fastapi-constance
   ```
 
-### 2. Pre Commit Hook
+## 2. Set Up Pre-commit Hooks
 
-- Install pre-commit package: `pip3 install pre-commit`
-- Activate pre-commit hook: `pre-commit install`
+- Install pre-commit:
 
-### 3. How to Contribute
+  ```bash
+  pip install pre-commit
+  ```
 
-1. **Fork** the repository.
-2. **Create a new branch** for your contribution:
+- Activate the pre-commit hook:
 
-   ```
-   bash
+  ```bash
+  pre-commit install
+  ```
+
+## 3. Create a Branch and Make Changes
+
+1. **Create a new branch** for your contribution:
+
+   ```bash
    git checkout -b feature/your-feature-name
-
    ```
 
-3. **Make your changes** and commit with a clear message:
+2. **Make your changes** and commit with a clear message:
 
    ```bash
    git commit -m "feat: add a new feature"
    ```
 
-4. **Push** your branch:
+3. **Push your branch**:
 
    ```bash
    git push origin feature/your-feature-name
    ```
 
-5. **Open a Pull Request** describing your changes.
+4. **Open a Pull Request** describing your changes.
