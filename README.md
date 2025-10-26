@@ -48,9 +48,9 @@ USER_CONFIG = {
         "description": "Sample integer implementation.",
         "type": int,
     },
-    "DEBUG_MODE": {
+    "BOOLEAN": {
         "value": True,
-        "description": "Enable debug mode.",
+        "description": "Sample boolean implementation.",
         "type": bool,
     },
     "FLOAT": {
