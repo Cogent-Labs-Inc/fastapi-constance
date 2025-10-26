@@ -11,7 +11,7 @@ constance_config = ConstanceConfigWrapper()
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI, session: AsyncSession, user_config: dict):
+async def constance_lifespan(app: FastAPI, session: AsyncSession, user_config: dict):
     """
     Async lifespan context manager for FastAPI.
 
