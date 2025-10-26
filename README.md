@@ -34,8 +34,10 @@ pip install fastapi-constance
 Use the `lifespan` context manager to initialize the configuration system:
 
 ```python
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
-from fastapi_constance import lifespan
+from fastapi_constance import constance_lifespan
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 
@@ -69,7 +71,14 @@ engine = create_async_engine(DATABASE_URL)
 AsyncSessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 
 # Attach lifespan to initialize Constance on startup
-app = FastAPI(lifespan=lambda app: lifespan(app, AsyncSessionLocal(), USER_CONFIG))
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    async with AsyncSessionLocal() as session:
+        async with constance_lifespan(app, session, USER_CONFIG):
+            yield
+
+
+app = FastAPI(lifespan=lifespan)
 ```
 
 ### 2️⃣ SQLAdmin Panel Integration
