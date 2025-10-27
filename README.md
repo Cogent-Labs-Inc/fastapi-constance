@@ -105,26 +105,6 @@ print(constance_config.INTEGER)  # Output: 42
 > ⚠️ **Note:** Configuration values are **read-only**.
 > You can **only get** values like `constance_config.INTEGER`, not set them manually (e.g., `constance_config.INTEGER = 50` is **not allowed**).
 
-## ⚙️ Configuration Management
-
-### Sync Settings
-
-The `ConstanceConfigManager` ensures that settings defined in code are synchronized with the database.
-It validates types, updates default values, and removes stale entries.
-
-### Wrapper
-
-The `ConstanceConfigWrapper` provides a global interface for accessing settings.
-It ensures that the manager is properly configured before accessing any settings.
-
-## 🚫 Error Handling
-
-The package includes custom exceptions for handling common issues:
-
-- **NotSupportedTypeError**: Raised when an unsupported type is used.
-- **TypeMismatchError**: Raised when a value does not match the expected type.
-- **ImproperlyConfiguredError**: Raised when the configuration manager is not properly initialized.
-
 ## 🧱 Dependencies
 
 The project requires the following dependencies:
