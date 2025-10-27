@@ -37,7 +37,7 @@ This document outlines the guidelines for contributing to this Python package.
    - `feat/`: For new features
    - `enh/`: For improvements / enhancements
    - `bug/`: For bug fixes
-   - `hotfix/`: For urgent fixes that need to be applied directly to production
+   - `hotfix/`: For critical fixes that must be applied immediately
 
    Example:
 
