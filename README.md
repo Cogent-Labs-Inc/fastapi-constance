@@ -73,9 +73,8 @@ AsyncSessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 # Attach lifespan to initialize Constance on startup
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    async with AsyncSessionLocal() as session:
-        async with constance_lifespan(app, session, USER_CONFIG):
-            yield
+    async with AsyncSessionLocal() as session, constance_lifespan(app, session, USER_CONFIG):
+        yield
 
 
 app = FastAPI(lifespan=lifespan)
