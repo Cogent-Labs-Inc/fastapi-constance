@@ -5,11 +5,13 @@ This document outlines the guidelines for contributing to this Python package.
 
 ## 1. Fork and Clone the Repository
 
-- Fork the repository to your GitHub account.
-- Clone your forked repository to your local machine:
+- Fork the repository to your **own GitHub account** by clicking the **“Fork”** button on
+  [https://github.com/Cogent-Labs-Inc/fastapi-constance](https://github.com/Cogent-Labs-Inc/fastapi-constance).
+
+- After forking, clone **your forked copy** of the repository to your local machine:
 
   ```bash
-  git clone https://github.com/Cogent-Labs-Inc/fastapi-constance.git
+  git clone https://github.com/<your-username>/fastapi-constance.git
   cd fastapi-constance
   ```
 
