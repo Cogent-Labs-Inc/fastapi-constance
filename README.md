@@ -110,7 +110,7 @@ print(constance_config.INTEGER)  # Output: 42
 ### Sync Settings
 
 The `ConstanceConfigManager` ensures that settings defined in code are synchronized with the database.
-It validates types, updates default values, and removes stale entries 🧹.
+It validates types, updates default values, and removes stale entries.
 
 ### Wrapper
 
@@ -137,8 +137,8 @@ The project requires the following dependencies:
 ## 🤝 Code of Conduct
 
 This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md).
-By participating, you are expected to uphold this code 💬.
+By participating, you are expected to uphold this code.
 
 ## 💡 Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines 🧩.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines.
