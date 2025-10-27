@@ -31,10 +31,18 @@ This document outlines the guidelines for contributing to this Python package.
 
 ## 3. Create a Branch and Make Changes
 
-1. **Create a new branch** for your contribution:
+1. **Create a new branch** for your contribution. Use the following naming conventions:
+
+   - `epic/`: For large, multi-part features
+   - `feat/`: For new features
+   - `enh/`: For improvements / enhancements
+   - `bug/`: For bug fixes
+   - `hotfix/`: For urgent fixes that need to be applied directly to production
+
+   Example:
 
    ```bash
-   git checkout -b feature/your-feature-name
+   git checkout -b feat/add-new-feature
    ```
 
 2. **Make your changes** and commit with a clear message:
@@ -46,7 +54,7 @@ This document outlines the guidelines for contributing to this Python package.
 3. **Push your branch**:
 
    ```bash
-   git push origin feature/your-feature-name
+   git push origin feat/add-new-feature
    ```
 
-4. **Open a Pull Request** describing your changes.
+4. **Open a Pull Request** describing your changes. Make sure to link any related issues.
