@@ -57,4 +57,4 @@ This document outlines the guidelines for contributing to this Python package.
    git push origin feat/add-new-feature
    ```
 
-4. **Open a Pull Request** describing your changes. Make sure to link any related issues.
+4. **Open a Pull Request** describing your changes.
