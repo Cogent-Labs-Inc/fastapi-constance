@@ -1,42 +1,65 @@
+# fastapi_constance/managers/cache.py
 from typing import Any, Dict
 
+from fastapi_constance.client.redis import RedisClient
 from fastapi_constance.exceptions import TypeMismatchError
 
 
 class ConstanceConfigCacheManager:
     """
-    Handles all cache-related responsibilities.
+    Redis-backed cache with a local in-memory copy for synchronous access.
+
+    - Reads from local memory are synchronous.
+    - Writes update both Redis and local memory.
+    - Type casting is supported.
     """
 
     def __init__(self):
-        self._cache: Dict[str, Any] = {}
+        self.redis = RedisClient.get_client()
+        self._local_cache: Dict[str, Any] = {}
 
-    def get(self, key: str) -> Any:
-        return self._cache.get(key)
+    async def get(self, key: str) -> Any:
+        """Async get from Redis"""
 
-    def set(self, key: str, value: Any):
-        self._cache[key] = value
+        value = await self.redis.get(key)
+        return value
 
-    def remove(self, key: str):
-        self._cache.pop(key, None)
+    async def set(self, key: str, value: Any):
+        """Async set to Redis and update local cache"""
 
-    def populate(self, config: Dict[str, dict]):
-        """
-        Initialize or refresh cache based on provided config structure.
-        Ensures type safety for each cached value.
-        """
+        if value is None:
+            redis_value = "None"
+        elif isinstance(value, bool):
+            redis_value = "True" if value else "False"
+        else:
+            redis_value = str(value)
+
+        await self.redis.set(key, redis_value)
+        self._local_cache[key] = value  # store original type in memory
+
+    async def remove(self, key: str):
+        """Async remove from Redis and local cache"""
+
+        await self.redis.delete(key)
+        self._local_cache.pop(key, None)
+
+    async def populate(self, config: Dict[str, dict]):
+        """Populate Redis and local cache with default config values."""
 
         for key, data in config.items():
             value_type = data.get("type", str)
-            cached_value = self.get(key)
-            casted = self.type_cast_value(cached_value, value_type)
-            self.set(key, casted)
+            value = data["value"]
+            casted_value = self.type_cast_value(value, value_type)
+            await self.set(key, casted_value)
+
+    def get_sync(self, key: str) -> Any:
+        """Get value synchronously from local memory"""
+
+        if key not in self._local_cache:
+            raise KeyError(f"No such config key: {key}")
+        return self._local_cache[key]
 
     def type_cast_value(self, value: Any, value_type: type) -> Any:
-        """
-        Strictly handle type casting, especially for bools.
-        """
-
         if value is None:
             return None
 
@@ -49,17 +72,12 @@ class ConstanceConfigCacheManager:
             raise TypeMismatchError(f"Cannot type cast value '{value}' to {value_type.__name__}")
 
     def _cast_to_bool(self, value: Any) -> bool:
-        """
-        Handle strict boolean type casting.
-        Accepts True/False (bool) or "True"/"False" (str).
-        """
-
         if isinstance(value, bool):
             return value
         if isinstance(value, str):
-            if value == "True":
+            val = value.lower()
+            if val == "true":
                 return True
-            elif value == "False":
+            elif val == "false":
                 return False
-            raise TypeMismatchError(f"Cannot type cast '{value}' to bool. Must be 'True' or 'False'.")
-        raise TypeMismatchError(f"Cannot type cast '{value}' of type {type(value).__name__} to bool.")
+        raise TypeMismatchError(f"Cannot cast '{value}' to bool")
