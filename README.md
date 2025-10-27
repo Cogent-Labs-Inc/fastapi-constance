@@ -1,4 +1,4 @@
-![🚀 Banner](assets/fastAPI_constance_banner.png)
+![🚀 Banner](https://raw.githubusercontent.com/Cogent-Labs-Inc/fastapi-constance/enh/documents/assets/fastAPI_constance_banner.png)
 
 # FastAPI Constance
 
