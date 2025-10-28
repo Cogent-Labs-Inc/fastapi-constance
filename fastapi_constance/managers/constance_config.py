@@ -17,7 +17,7 @@ class ConstanceConfigManager:
     def __init__(self, database_session, config: Dict[str, dict]):
         self.config = config
         self.validator = ConstanceConfigValidator()
-        self.cache = ConstanceConfigCacheManager()  # auto uses RedisClient with env vars
+        self.cache = ConstanceConfigCacheManager()
         self.database_sync = ConstanceConfigDatabaseSyncService(database_session)
 
     async def initialize_config_system(self):

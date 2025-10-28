@@ -1,3 +1,8 @@
+from typing import Any
+
+from fastapi_constance.exceptions import ImproperlyConfiguredError
+
+
 class ConstanceConfigWrapper:
     """
     Async-only wrapper for configuration values.
@@ -7,12 +12,16 @@ class ConstanceConfigWrapper:
 
     _manager = None
 
-    def set_manager(self, manager):
+    def set_manager(self, manager: Any):
+        if self._manager is not None:
+            raise ImproperlyConfiguredError("Manager already configured")
         self._manager = manager
 
-    async def get_value(self, key: str):
+    async def get_value(self, key: str) -> Any:
+        """Get a value from the cache."""
+
         if self._manager is None:
-            raise RuntimeError("Manager not configured")
+            raise ImproperlyConfiguredError("Manager not configured")
 
         data = self._manager.config.get(key)
         if not data:
@@ -22,6 +31,8 @@ class ConstanceConfigWrapper:
         return self._manager.cache.type_cast_value(cached, data.get("type", str))
 
     async def set_value(self, key: str, value):
+        """Set a value from the cache."""
+
         if self._manager is None:
             raise RuntimeError("Manager not configured")
         await self._manager.cache.set(key, value)
