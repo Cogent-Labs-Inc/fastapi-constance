@@ -22,7 +22,7 @@ It allows developers to manage dynamic configuration settings directly from the 
 
 - 🔧 **Dynamic Configuration Management** — Define and update app settings at runtime without redeploying.
 - ⚙️ **Admin Integration** — Manage configurations directly through the FastAPI admin panel.
-- 🧠 **Automatic Cache Sync** — Ensures updated values are immediately reflected in the cache.
-- 🔄 **Async Lifespan Context** — Provides a simple context manager for integrating configuration during app startup and shutdown.
-- 🗄️ **Database-Backed Settings** — Stores configuration data persistently using SQLAlchemy.
-- 🧩 **Type-Safe Values** — Automatically casts configuration values to their defined types.
+- ⚡ **Real-Time Cache Updates (Redis)** — Instantly syncs configuration changes across all FastAPI or Gunicorn workers.
+- 🧠 **Automatic Type Casting** — Converts values to their declared types automatically.
+- 🔄 **Lifespan Context Manager** — Simple integration for FastAPI startup and shutdown.
+- 🗄️ **Database-Backed Settings** — Persistent configuration storage using SQLAlchemy.
