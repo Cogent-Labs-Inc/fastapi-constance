@@ -11,12 +11,12 @@ class ConstanceConfigCacheManager:
     """
 
     def __init__(self):
-        self.redis = RedisClient.get_client()
+        self.redis_client = RedisClient.get_client()
 
     async def get(self, key: str) -> Any:
         """Get value directly from Redis."""
 
-        value = await self.redis.get(key)
+        value = await self.redis_client.get(key)
         return value
 
     async def set(self, key: str, value: Any):
@@ -29,12 +29,12 @@ class ConstanceConfigCacheManager:
         else:
             redis_value = str(value)
 
-        await self.redis.set(key, redis_value)
+        await self.redis_client.set(key, redis_value)
 
     async def remove(self, key: str):
         """Remove value from Redis."""
 
-        await self.redis.delete(key)
+        await self.redis_client.delete(key)
 
     async def populate(self, config: dict):
         """Populate Redis with default config values."""
