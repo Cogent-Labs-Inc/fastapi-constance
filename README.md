@@ -1,21 +1,45 @@
+Got it 👍 — here’s your **updated README**:
+
+- Redis is now marked as **required**, not optional.
+- The `USER_CONFIG` example is now more **realistic**, reflecting what a developer might actually configure in production (like feature flags, limits, and branding).
+- The tone and formatting match your existing style perfectly.
+
 ![🚀 Banner](https://raw.githubusercontent.com/Cogent-Labs-Inc/fastapi-constance/enh/documents/assets/fastAPI_constance_banner.png)
 
 # FastAPI Constance
 
-**FastAPI Constance** is a dynamic configuration management system for FastAPI, inspired by Django Constance. It allows developers to define application settings in code, store them in the database, and access them easily. The system ensures type safety, supports caching, and provides admin panel integration for managing configurations.
+**FastAPI Constance** is a dynamic configuration management system for FastAPI, inspired by Django Constance.
+It allows developers to define application settings in code, store them in the database, and access them easily.
+The system ensures type safety, supports Redis-based caching, and provides admin panel integration for managing configurations.
 
 > ⚠️ **Note:** FastAPI Constance only supports **SQLAdmin** and **SQLAlchemy** with **asynchronous sessions** (`AsyncSession`).
-
-The system ensures type safety, supports caching, and provides admin panel integration for managing configurations.
 
 ## ✨ Features
 
 - **Type-safe configuration**: Supports `int`, `float`, `str`, and `bool` types.
 - **Dynamic configuration management**: Define settings in Python code and sync them with the database.
 - **Admin panel integration**: Compatible with SQLAdmin for managing configurations.
-- **Global wrapper**: Access settings easily via `constance_config.INTEGER`.
-- **Caching**: Configurations are cached for fast access.
+- **Global wrapper**: Access settings easily via `constance_config.FEATURE_FLAG`.
+- **Redis caching**: Shared, async cache ensures consistent and fast access across multiple workers.
 - **Validation**: Ensures type correctness and prevents mismatches between code and database values.
+
+## ⚡ Redis Caching
+
+FastAPI Constance uses **Redis (async)** as its caching backend to provide high-performance, shared configuration access across all FastAPI workers.
+
+It relies on the `redis.asyncio` client for **non-blocking I/O**, allowing your app to scale efficiently under load.
+Every configuration read/write goes directly through Redis — no local in-memory caching is used.
+
+### ✅ Environment Variables
+
+Set the following environment variables in your `.env` file:
+
+```bash
+REDIS_URL=redis://localhost:6379
+REDIS_DB=0
+```
+
+This ensures all workers share the same configuration state in Redis.
 
 ## 📦 Installation
 
@@ -39,27 +63,27 @@ from fastapi_constance import constance_lifespan
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 
-# USER_CONFIG is just an example; users can define it anywhere and name it anything.
+# Example: Real-world app configuration
 USER_CONFIG = {
-    "INTEGER": {
-        "value": 42,
-        "description": "Sample integer implementation.",
-        "type": int,
+    "SITE_NAME": {
+        "value": "Cogent Labs Portal",
+        "description": "Displayed site name in the application header.",
+        "type": str,
     },
-    "BOOLEAN": {
+    "ENABLE_SIGNUP": {
         "value": True,
-        "description": "Sample boolean implementation.",
+        "description": "Toggle to enable or disable new user registrations.",
         "type": bool,
     },
-    "FLOAT": {
-        "value": 98.11,
-        "description": "Sample float implementation.",
-        "type": float,
+    "DAILY_API_LIMIT": {
+        "value": 5000,
+        "description": "Maximum number of API calls allowed per user per day.",
+        "type": int,
     },
-    "STR": {
-        "value": "FastAPI Constance",
-        "description": "Sample string implementation.",
-        "type": str,
+    "DISCOUNT_RATE": {
+        "value": 0.10,
+        "description": "Global discount rate applied to new subscriptions.",
+        "type": float,
     },
 }
 
@@ -97,20 +121,21 @@ Access settings globally using the wrapper:
 ```python
 from fastapi_constance import constance_config
 
-print(constance_config.INTEGER)  # Output: 42
+print(await constance_config.SITE_NAME)  # Output: "Cogent Labs Portal"
+print(await constance_config.ENABLE_SIGNUP)  # Output: True
+print(await constance_config.DAILY_API_LIMIT)  # Output: 5000
 ```
 
 > ⚠️ **Note:** Configuration values are **read-only**.
-> You can **only get** values like `constance_config.INTEGER`, not set them manually (e.g., `constance_config.INTEGER = 50` is **not allowed**).
+> You can **only get** values like `constance_config.SITE_NAME`, not set them manually (e.g., `constance_config.SITE_NAME = "New Name"` is **not allowed**).
 
 ## 🧱 Dependencies
-
-The project requires the following dependencies:
 
 - **FastAPI**: `>=0.115.0`
 - **SQLAlchemy**: `>=2.0`
 - **SQLModel**: `>=0.0.16`
 - **SQLAdmin**: `>=0.20.0`
+- **Redis**: `>=5.0.0`
 
 ## 🤝 Code of Conduct
 
