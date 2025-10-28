@@ -1,4 +1,3 @@
-# fastapi_constance/managers/cache.py
 from typing import Any, Dict
 
 from fastapi_constance.client.redis import RedisClient
@@ -35,7 +34,8 @@ class ConstanceConfigCacheManager:
             redis_value = str(value)
 
         await self.redis.set(key, redis_value)
-        self._local_cache[key] = value  # store original type in memory
+
+        self._local_cache[key] = value
 
     async def remove(self, key: str):
         """Async remove from Redis and local cache"""

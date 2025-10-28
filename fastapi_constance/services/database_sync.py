@@ -11,6 +11,12 @@ class ConstanceConfigDatabaseSyncService:
     def __init__(self, database_session):
         self.database_session = database_session
 
+    async def load_all(self):
+        """Return all config entries from the database."""
+
+        result = await self.database_session.execute(select(ConstanceConfig))
+        return result.scalars().all()
+
     async def sync(self, config: dict, cache: ConstanceConfigCacheManager):
         """
         Sync database entries with the given config and update the cache.
@@ -48,24 +54,27 @@ class ConstanceConfigDatabaseSyncService:
         await self.database_session.commit()
         return db_conf
 
-    async def _update_existing(self, db_conf, value, description, cache: ConstanceConfigCacheManager):
+    async def _update_existing(self, db_conf, value, description, cache):
         """
         Update an existing config record and refresh the cache.
+        If the value was modified by admin, never override it with defaults.
         """
 
         updated = False
 
-        if db_conf.description != description:
+        if description and db_conf.description != description:
             db_conf.description = description
             updated = True
 
         if not db_conf.is_admin_modified:
-            if db_conf.default_value != str(value) or db_conf.value != str(value):
-                db_conf.default_value = db_conf.value = str(value)
+            if db_conf.value != str(value):
+                db_conf.value = str(value)
+                db_conf.default_value = str(value)
                 updated = True
-        elif db_conf.default_value != str(value):
-            db_conf.default_value = str(value)
-            updated = True
+        else:
+            if db_conf.default_value != str(value):
+                db_conf.default_value = str(value)
+                updated = True
 
         if updated:
             self.database_session.add(db_conf)

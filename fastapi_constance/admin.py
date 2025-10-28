@@ -70,6 +70,13 @@ class ConstanceConfigAdmin(ModelView, model=ConstanceConfig):
         Validates that the new value matches the expected type defined in CONFIG.
         """
 
+        readonly_fields = ["key", "default_value", "description"]
+        for field in readonly_fields:
+            if field in constance_config and constance_config[field] != getattr(model, field):
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail=f"{field} is readonly and cannot be modified."
+                )
+
         if not is_created and "value" in constance_config:
             key = constance_config.get("key") or model.key
             new_value = constance_config.get("value")
