@@ -16,7 +16,7 @@ class RedisClient:
     def get_client(cls) -> redis.Redis:
         if cls._instance is None:
             redis_url = os.getenv("REDIS_URL")
-            redis_db = int(os.getenv("REDIS_DB", 0))
+            redis_db = int(os.getenv("REDIS_DB"))
 
             cls._instance = redis.Redis.from_url(
                 redis_url,
