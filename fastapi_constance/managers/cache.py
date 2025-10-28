@@ -1,6 +1,6 @@
 from typing import Any
 
-from fastapi_constance.client.redis import RedisClient
+from fastapi_constance.clients.redis import RedisClient
 from fastapi_constance.exceptions import TypeMismatchError
 
 

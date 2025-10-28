@@ -25,12 +25,17 @@ class ConstanceConfigManager:
 
         self.validator.validate_config(self.config)
         await self.database_sync.sync(self.config, self.cache)
+        await self.populate_cache_from_db()
+
+    async def populate_cache_from_db(self):
+        """Load all configs from DB and populate Redis cache."""
 
         result = await self.database_sync.load_all()
 
         for db_conf in result:
             value_type = self.config.get(db_conf.key, {}).get("type", str)
-            await self.cache.set(db_conf.key, self.cache.type_cast_value(db_conf.value, value_type))
+            casted_value = self.cache.type_cast_value(db_conf.value, value_type)
+            await self.cache.set(db_conf.key, casted_value)
 
     async def get(self, key: str):
         """Get a value from cache, type-casted to its original type."""
