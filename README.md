@@ -22,7 +22,7 @@ The system ensures type safety, supports Redis-based caching, and provides admin
 FastAPI Constance uses **Redis (async)** as its caching backend to provide high-performance, shared configuration access across all FastAPI workers.
 
 It relies on the `redis.asyncio` client for **non-blocking I/O**, allowing your app to scale efficiently under load.
-Every configuration read/write goes directly through Redis — no local in-memory caching is used.
+Every configuration read/write goes directly through Redis.
 
 ### ✅ Environment Variables
 
