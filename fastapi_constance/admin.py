@@ -70,6 +70,13 @@ class ConstanceConfigAdmin(ModelView, model=ConstanceConfig):
         Validates that the new value matches the expected type defined in CONFIG.
         """
 
+        readonly_fields = ["key", "default_value", "description"]
+        for field in readonly_fields:
+            if field in constance_config and constance_config[field] != getattr(model, field):
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail=f"{field} is readonly and cannot be modified."
+                )
+
         if not is_created and "value" in constance_config:
             key = constance_config.get("key") or model.key
             new_value = constance_config.get("value")
@@ -101,6 +108,6 @@ class ConstanceConfigAdmin(ModelView, model=ConstanceConfig):
             constance_config["is_admin_modified"] = True
             from fastapi_constance.lifespan import constance_config as lifespan_constance_config
 
-            lifespan_constance_config.set_value(key, casted_value)
+            await lifespan_constance_config.set_value(key, casted_value)
 
         await super().on_model_change(constance_config, model, is_created, request)

@@ -1,54 +1,60 @@
-from typing import Any, Dict
+from typing import Any
 
+from fastapi_constance.clients.redis import RedisClient
 from fastapi_constance.exceptions import TypeMismatchError
 
 
 class ConstanceConfigCacheManager:
     """
-    Handles all cache-related responsibilities.
+    Redis-backed cache without local memory.
+    All reads/writes go directly to Redis.
     """
 
     def __init__(self):
-        self._cache: Dict[str, Any] = {}
+        self.redis_client = RedisClient.get_client()
 
-    def get(self, key: str) -> Any:
-        return self._cache.get(key)
+    async def get(self, key: str) -> Any:
+        """Get value directly from Redis."""
 
-    def set(self, key: str, value: Any):
-        self._cache[key] = value
+        value = await self.redis_client.get(key)
+        return value
 
-    def remove(self, key: str):
-        self._cache.pop(key, None)
+    async def set(self, key: str, value: Any):
+        """Set value in Redis."""
 
-    def populate(self, config: Dict[str, dict]):
-        """
-        Initialize or refresh cache based on provided config structure.
-        Ensures type safety for each cached value.
-        """
+        if value is None:
+            redis_value = "None"
+        elif isinstance(value, bool):
+            redis_value = "True" if value else "False"
+        else:
+            redis_value = str(value)
+
+        await self.redis_client.set(key, redis_value)
+
+    async def remove(self, key: str):
+        """Remove value from Redis."""
+
+        await self.redis_client.delete(key)
+
+    async def populate(self, config: dict):
+        """Populate Redis with default config values."""
 
         for key, data in config.items():
             value_type = data.get("type", str)
-            cached_value = self.get(key)
-            casted = self.type_cast_value(cached_value, value_type)
-            self.set(key, casted)
+            value = data["value"]
+            await self.set(key, self.type_cast_value(value, value_type))
 
-    def type_cast_value(self, value: Any, value_type: type) -> Any:
+    def type_cast_value(self, value: Any, value_type: type):
         """
         Strictly handle type casting, especially for bools.
         """
 
-        if value is None:
-            return None
-
-        if value_type is bool:
-            return self._cast_to_bool(value)
-
         try:
-            return value_type(value)
+            return None if value is None else self._cast_to_bool(value) if value_type is bool else value_type(value)
         except (ValueError, TypeError):
             raise TypeMismatchError(f"Cannot type cast value '{value}' to {value_type.__name__}")
 
-    def _cast_to_bool(self, value: Any) -> bool:
+    def _cast_to_bool(self, value: Any):
         """
         Handle strict boolean type casting.
         Accepts True/False (bool) or "True"/"False" (str).
@@ -56,10 +62,6 @@ class ConstanceConfigCacheManager:
 
         if isinstance(value, bool):
             return value
-        if isinstance(value, str):
-            if value == "True":
-                return True
-            elif value == "False":
-                return False
-            raise TypeMismatchError(f"Cannot type cast '{value}' to bool. Must be 'True' or 'False'.")
-        raise TypeMismatchError(f"Cannot type cast '{value}' of type {type(value).__name__} to bool.")
+        if isinstance(value, str) and value in ("True", "False"):
+            return value == "True"
+        raise TypeMismatchError(f"Cannot type cast '{value}' to bool. Must be 'True' or 'False'.")
