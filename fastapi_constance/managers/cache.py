@@ -48,12 +48,9 @@ class ConstanceConfigCacheManager:
         """
         Strictly handle type casting, especially for bools.
         """
-        if value is None:
-            return None
-        if value_type is bool:
-            return self._cast_to_bool(value)
+
         try:
-            return value_type(value)
+            return None if value is None else self._cast_to_bool(value) if value_type is bool else value_type(value)
         except (ValueError, TypeError):
             raise TypeMismatchError(f"Cannot type cast value '{value}' to {value_type.__name__}")
 
