@@ -62,10 +62,6 @@ class ConstanceConfigCacheManager:
 
         if isinstance(value, bool):
             return value
-        if isinstance(value, str):
-            if value == "True":
-                return True
-            elif value == "False":
-                return False
-            raise TypeMismatchError(f"Cannot type cast '{value}' to bool. Must be 'True' or 'False'.")
-        raise TypeMismatchError(f"Cannot type cast '{value}' of type {type(value).__name__} to bool.")
+        if isinstance(value, str) and value in ("True", "False"):
+            return value == "True"
+        raise TypeMismatchError(f"Cannot type cast '{value}' to bool. Must be 'True' or 'False'.")
