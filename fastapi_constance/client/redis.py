@@ -8,7 +8,7 @@ class RedisClient:
     """
     Async Redis client singleton for Gunicorn multi-worker.
     Handles connection pooling internally.
-    Reads host/port/db from environment variables for Docker compatibility.
+    Reads url/db from environment variables for Docker compatibility.
     """
 
     _instance: Optional[redis.Redis] = None

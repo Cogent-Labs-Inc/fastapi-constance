@@ -1,30 +1,33 @@
-import asyncio
-from typing import Any, Optional
-
-from fastapi_constance.exceptions import ImproperlyConfiguredError
-
-
 class ConstanceConfigWrapper:
     """
-    Synchronous wrapper for configuration values.
-    Reads from the local memory cache for immediate access.
+    Async-only wrapper for configuration values.
+    Must be accessed with `await constance_config.KEY`
+    Works consistently across Uvicorn and Gunicorn (async workers).
     """
 
-    _manager: Optional[Any] = None
+    _manager = None
 
-    def set_manager(self, manager: Any):
+    def set_manager(self, manager):
         self._manager = manager
 
-    def get_value(self, key: str) -> Any:
+    async def get_value(self, key: str):
         if self._manager is None:
-            raise ImproperlyConfiguredError("Manager not configured")
-        return self._manager.cache.get_sync(key)
+            raise RuntimeError("Manager not configured")
 
-    def set_value(self, key: str, value: Any):
+        data = self._manager.config.get(key)
+        if not data:
+            raise KeyError(f"{key} is not a valid config key")
+
+        cached = await self._manager.cache.get(key)
+        return self._manager.cache.type_cast_value(cached, data.get("type", str))
+
+    async def set_value(self, key: str, value):
         if self._manager is None:
-            raise ImproperlyConfiguredError("Manager not configured")
-        self._manager.cache._local_cache[key] = value
-        asyncio.create_task(self._manager.cache.set(key, value))
+            raise RuntimeError("Manager not configured")
+        await self._manager.cache.set(key, value)
 
-    def __getattr__(self, key: str) -> Any:
-        return self.get_value(key)
+    def __getattr__(self, key: str):
+        async def getter():
+            return await self.get_value(key)
+
+        return getter()

@@ -108,6 +108,6 @@ class ConstanceConfigAdmin(ModelView, model=ConstanceConfig):
             constance_config["is_admin_modified"] = True
             from fastapi_constance.lifespan import constance_config as lifespan_constance_config
 
-            lifespan_constance_config.set_value(key, casted_value)
+            await lifespan_constance_config.set_value(key, casted_value)
 
         await super().on_model_change(constance_config, model, is_created, request)
