@@ -45,8 +45,9 @@ class ConstanceConfigCacheManager:
             await self.set(key, self.type_cast_value(value, value_type))
 
     def type_cast_value(self, value: Any, value_type: type):
-        """Type cast value from Redis."""
-
+        """
+        Strictly handle type casting, especially for bools.
+        """
         if value is None:
             return None
         if value_type is bool:
@@ -57,14 +58,17 @@ class ConstanceConfigCacheManager:
             raise TypeMismatchError(f"Cannot type cast value '{value}' to {value_type.__name__}")
 
     def _cast_to_bool(self, value: Any):
-        """Type cast value to bool."""
+        """
+        Handle strict boolean type casting.
+        Accepts True/False (bool) or "True"/"False" (str).
+        """
 
         if isinstance(value, bool):
             return value
         if isinstance(value, str):
-            val = value.lower()
-            if val == "true":
+            if value == "True":
                 return True
-            elif val == "false":
+            elif value == "False":
                 return False
-        raise TypeMismatchError(f"Cannot cast '{value}' to bool")
+            raise TypeMismatchError(f"Cannot type cast '{value}' to bool. Must be 'True' or 'False'.")
+        raise TypeMismatchError(f"Cannot type cast '{value}' of type {type(value).__name__} to bool.")

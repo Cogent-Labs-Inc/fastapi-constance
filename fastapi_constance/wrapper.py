@@ -34,7 +34,7 @@ class ConstanceConfigWrapper:
         """Set a value from the cache."""
 
         if self._manager is None:
-            raise RuntimeError("Manager not configured")
+            raise ImproperlyConfiguredError("Manager not configured")
         await self._manager.cache.set(key, value)
 
     def __getattr__(self, key: str):

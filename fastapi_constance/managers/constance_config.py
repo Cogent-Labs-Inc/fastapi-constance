@@ -21,12 +21,13 @@ class ConstanceConfigManager:
         self.database_sync = ConstanceConfigDatabaseSyncService(database_session)
 
     async def initialize_config_system(self):
-        """Validate config, sync DB without overwriting admin-modified values, populate cache."""
+        """Validate config, sync database, and populate cache."""
 
         self.validator.validate_config(self.config)
         await self.database_sync.sync(self.config, self.cache)
 
         result = await self.database_sync.load_all()
+
         for db_conf in result:
             value_type = self.config.get(db_conf.key, {}).get("type", str)
             await self.cache.set(db_conf.key, self.cache.type_cast_value(db_conf.value, value_type))
