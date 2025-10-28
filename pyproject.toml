@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "fastapi-constance"
-version = "0.0.1a1"
+version = "0.0.1a12"
 description = "Dynamic configuration management for FastAPI, inspired by Django Constance."
 readme = "README.md"
 license = { text = "MIT" }
@@ -14,7 +14,8 @@ dependencies = [
     "fastapi>=0.115.0",
     "sqlalchemy>=2.0",
     "sqlmodel>=0.0.16",
-    "sqladmin",
+    "sqladmin>=0.20.0",
+    "redis"
 ]
 
 [project.urls]
