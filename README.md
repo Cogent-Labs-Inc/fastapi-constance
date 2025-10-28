@@ -57,7 +57,7 @@ from fastapi_constance import constance_lifespan
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 
-# Example: Real-world app configuration
+# Example usage of Config.
 USER_CONFIG = {
     "SITE_NAME": {
         "value": "Cogent Labs Portal",
