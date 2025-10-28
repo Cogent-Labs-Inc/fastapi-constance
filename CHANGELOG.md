@@ -11,7 +11,7 @@ and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Release Information
 
-- **Initial Release** of **fastapi-constance** 🎉
+- **Initial Alpha Release** of **fastapi-constance** 🎉
 
 ### Overview
 
