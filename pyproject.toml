@@ -15,7 +15,7 @@ dependencies = [
     "sqlalchemy>=2.0",
     "sqlmodel>=0.0.16",
     "sqladmin>=0.20.0",
-    "redis"
+    "redis>=5.0.0"
 ]
 
 [project.urls]

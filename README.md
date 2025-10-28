@@ -1,9 +1,3 @@
-Got it 👍 — here’s your **updated README**:
-
-- Redis is now marked as **required**, not optional.
-- The `USER_CONFIG` example is now more **realistic**, reflecting what a developer might actually configure in production (like feature flags, limits, and branding).
-- The tone and formatting match your existing style perfectly.
-
 ![🚀 Banner](https://raw.githubusercontent.com/Cogent-Labs-Inc/fastapi-constance/enh/documents/assets/fastAPI_constance_banner.png)
 
 # FastAPI Constance
