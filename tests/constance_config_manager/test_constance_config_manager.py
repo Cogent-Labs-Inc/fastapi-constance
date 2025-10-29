@@ -1,7 +1,6 @@
 import pytest
 
 from fastapi_constance.exceptions import TypeMismatchError
-from tests.constance_config_manager.conftest import manager
 
 
 @pytest.mark.asyncio
