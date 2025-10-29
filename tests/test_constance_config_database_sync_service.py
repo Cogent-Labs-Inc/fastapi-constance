@@ -7,28 +7,33 @@ from fastapi_constance.services.database_sync import ConstanceConfigDatabaseSync
 
 
 @pytest.fixture
-def mock_cache(monkeypatch):
+def mock_cache():
     """
-    Patch ConstanceConfigCacheManager to avoid real Redis calls.
-    Returns a mocked AsyncMock instance with async set/remove/get methods.
+    Fixture that provides a mocked cache manager.
+
+    This avoids any real Redis operations by returning an AsyncMock
+    version of ConstanceConfigCacheManager with async methods for:
+        - set()
+        - get()
+        - remove()
     """
+
     mock_cache_instance = AsyncMock(spec=ConstanceConfigCacheManager)
     mock_cache_instance.set = AsyncMock()
     mock_cache_instance.get = AsyncMock()
     mock_cache_instance.remove = AsyncMock()
-
-    monkeypatch.setattr(
-        "fastapi_constance.services.database_sync.ConstanceConfigCacheManager", lambda: mock_cache_instance
-    )
     return mock_cache_instance
 
 
 @pytest.fixture
 def mock_db_session():
     """
-    Returns a mocked database session for injecting into the service.
-    Makes `execute` awaitable and returns a mock result with `scalars().all()`.
+    Fixture that provides a mocked database session.
+
+    This simulates an asynchronous SQLAlchemy session to prevent real DB operations.
+    The session includes async-compatible methods and a mock query result.
     """
+
     mock_session = MagicMock()
 
     mock_result = MagicMock()
@@ -45,6 +50,13 @@ def mock_db_session():
 
 @pytest.mark.asyncio
 async def test_sync_calls_cache_set(mock_cache, mock_db_session):
+    """
+    Test that `sync()` correctly sets configuration values in the cache.
+
+    Ensures that for each key-value pair in the configuration dictionary,
+    the cache.set() method is awaited with the expected arguments.
+    """
+
     service = ConstanceConfigDatabaseSyncService(database_session=mock_db_session)
     config = {
         "DEBUG": {"value": "True", "type": bool},
@@ -60,13 +72,28 @@ async def test_sync_calls_cache_set(mock_cache, mock_db_session):
 
 @pytest.mark.asyncio
 async def test_sync_empty_config(mock_cache, mock_db_session):
+    """
+    Test that `sync()` does not attempt to set any values when the config is empty.
+
+    Ensures no unnecessary cache operations occur when an empty dictionary
+    is passed to the sync method.
+    """
+
     service = ConstanceConfigDatabaseSyncService(database_session=mock_db_session)
-    await service.sync(config={}, cache=mock_cache)  # empty dict
+    await service.sync(config={}, cache=mock_cache)
+
     mock_cache.set.assert_not_awaited()
 
 
 @pytest.mark.asyncio
 async def test_sync_type_casting(mock_cache, mock_db_session):
+    """
+    Test that `sync()` handles type casting correctly before storing values in the cache.
+
+    Although type casting is internal, this test verifies that the correct
+    keys and values are passed to cache.set(), maintaining expected behavior.
+    """
+
     service = ConstanceConfigDatabaseSyncService(database_session=mock_db_session)
     config = {
         "ENABLED": {"value": "False", "type": bool},
