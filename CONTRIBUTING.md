@@ -123,15 +123,7 @@ To run tests for a specific module:
 
 ```bash
 pytest tests/constance_config_manager/
-```
-
-To check coverage:
-
-```bash
-pytest --cov=fastapi_constance --cov-report=term-missing
-```
-
-  
+```  
 
 ## 6. Code Quality and Style
 
