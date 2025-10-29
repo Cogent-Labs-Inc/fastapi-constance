@@ -130,8 +130,8 @@ print(await constance_config.DAILY_API_LIMIT)  # Output: 5000
 - **SQLModel**: `>=0.0.16`
 - **SQLAdmin**: `>=0.20.0`
 - **Redis**: `>=5.0.0`
-- **PyTest**: `>=8.4.2`
-- **PyTest Asyncio**: `>=1.2.0`
+- **PyTest**: `>=7.4.4`
+- **PyTest Asyncio**: `>=0.23.8`
 
 ## 🤝 Code of Conduct
 
