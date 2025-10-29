@@ -58,11 +58,8 @@ def mock_set_value():
         yield mock_method
 
 
-# ------------------ Tests ------------------
-
-
 @pytest.mark.asyncio
-async def test_readonly_field_change_raises(admin, model, mock_request):
+async def test_readonly_field_change(admin, model, mock_request):
     """
     Test that attempting to modify a readonly field ('default_value')
     raises an HTTPException with a 400 status code.
@@ -80,7 +77,7 @@ async def test_readonly_field_change_raises(admin, model, mock_request):
 
 
 @pytest.mark.asyncio
-async def test_invalid_type_raises(admin, model, mock_request):
+async def test_invalid_type(admin, model, mock_request):
     """
     Test that setting a value with an invalid type (e.g., non-integer for int field)
     raises an HTTPException with a 400 status code.
@@ -98,7 +95,7 @@ async def test_invalid_type_raises(admin, model, mock_request):
 
 
 @pytest.mark.asyncio
-async def test_bool_accepts_true_false(admin, mock_request, mock_set_value):
+async def test_valid_boolean_strings(admin, mock_request, mock_set_value):
     """
     Test that boolean fields correctly handle 'True'/'False' string inputs,
     convert them to bool types, and call set_value with correct parameters.
@@ -119,7 +116,7 @@ async def test_bool_accepts_true_false(admin, mock_request, mock_set_value):
 
 
 @pytest.mark.asyncio
-async def test_unknown_key_raises(admin, mock_request):
+async def test_invalid_config_key(admin, mock_request):
     """
     Test that attempting to modify a configuration key not defined in CONFIG
     raises an HTTPException with a 400 status code.

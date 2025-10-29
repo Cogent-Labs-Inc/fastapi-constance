@@ -50,7 +50,7 @@ async def test_get_value_from_redis(mock_redis_client):
 
 
 @pytest.mark.asyncio
-async def test_set_value_str(mock_redis_client):
+async def test_set_str_value(mock_redis_client):
     """
     Test that `set()` stores a string value correctly in Redis.
     """
@@ -61,7 +61,7 @@ async def test_set_value_str(mock_redis_client):
 
 
 @pytest.mark.asyncio
-async def test_set_value_bool(mock_redis_client):
+async def test_set_bool_value(mock_redis_client):
     """
     Test that `set()` correctly converts boolean values
     to their string equivalents ("True"/"False") before saving.
@@ -75,7 +75,7 @@ async def test_set_value_bool(mock_redis_client):
 
 
 @pytest.mark.asyncio
-async def test_set_value_none(mock_redis_client):
+async def test_set_none_value(mock_redis_client):
     """
     Test that `set()` converts None values to the string "None"
     before saving them to Redis.
@@ -118,7 +118,7 @@ async def test_populate_config(mock_redis_client):
     assert mock_redis_client.set.await_count == 3
 
 
-def test_type_cast_value_valid_types(mock_redis_client):
+def test_type_cast_valid_values(mock_redis_client):
     """
     Test that `type_cast_value()` correctly casts valid primitive types:
     int, bool, and str.
@@ -131,7 +131,7 @@ def test_type_cast_value_valid_types(mock_redis_client):
     assert cache.type_cast_value("sample", str) == "sample"
 
 
-def test_type_cast_value_invalid_bool(mock_redis_client):
+def test_type_cast_invalid_bool(mock_redis_client):
     """
     Test that invalid boolean string values raise a TypeMismatchError.
     """
@@ -141,7 +141,7 @@ def test_type_cast_value_invalid_bool(mock_redis_client):
         cache.type_cast_value("yes", bool)
 
 
-def test_type_cast_value_invalid_cast(mock_redis_client):
+def test_type_cast_invalid_cast(mock_redis_client):
     """
     Test that invalid type casting (e.g., "abc" → int)
     raises a TypeMismatchError.

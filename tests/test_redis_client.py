@@ -14,7 +14,7 @@ def reset_singleton():
     RedisClient._instance = None
 
 
-def test_get_client_creates_instance_once(monkeypatch):
+def test_get_client_returns_single_instance(monkeypatch):
     """Ensure get_client creates a single Redis instance."""
 
     mock_redis = MagicMock()

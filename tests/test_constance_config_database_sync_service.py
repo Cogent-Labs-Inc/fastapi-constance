@@ -49,7 +49,7 @@ def mock_db_session():
 
 
 @pytest.mark.asyncio
-async def test_sync_calls_cache_set(mock_cache, mock_db_session):
+async def test_sync_sets_all_config_values_in_cache(mock_cache, mock_db_session):
     """
     Test that `sync()` correctly sets configuration values in the cache.
 

@@ -21,7 +21,7 @@ def mock_manager():
 async def test_set_manager_once(mock_manager):
     wrapper = ConstanceConfigWrapper()
     wrapper.set_manager(mock_manager)
-    # Setting again should raise
+
     with pytest.raises(ImproperlyConfiguredError):
         wrapper.set_manager(mock_manager)
 
@@ -70,10 +70,9 @@ async def test_set_value_without_manager():
 
 
 @pytest.mark.asyncio
-async def test_getattr_magic_method_returns_value(mock_manager):
+async def test_getattr_returns_config_value(mock_manager):
     wrapper = ConstanceConfigWrapper()
     wrapper.set_manager(mock_manager)
 
-    # Using the __getattr__ async getter
     value = await wrapper.TEST_KEY
     assert value == 42

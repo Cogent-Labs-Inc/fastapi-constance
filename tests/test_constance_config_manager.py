@@ -46,19 +46,22 @@ async def test_initialize_config_system(manager):
 
 
 @pytest.mark.asyncio
-async def test_get_valid_and_invalid_key(manager):
-    """Test getting existing key and KeyError for invalid key."""
-
+async def test_get_valid_key(manager):
+    """Test that get() returns the correct value for a valid key."""
     manager.cache.type_cast_value.return_value = "val"
     value = await manager.get("key1")
     assert value == "val"
 
+
+@pytest.mark.asyncio
+async def test_get_invalid_key_raises_keyerror(manager):
+    """Test that get() raises KeyError for an invalid key."""
     with pytest.raises(KeyError):
         await manager.get("invalid_key")
 
 
 @pytest.mark.asyncio
-async def test_set_value_type_mismatch(manager):
+async def test_set_invalid_type_value(manager):
     """Test type mismatch raises error."""
 
     manager.config = {"key1": {"type": int, "value": 0, "description": "desc"}}
