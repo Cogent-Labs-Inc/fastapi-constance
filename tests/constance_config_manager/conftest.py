@@ -31,7 +31,6 @@ def manager(mock_session):
         mgr.database_sync.sync = AsyncMock()
         mgr.database_sync.load_all = AsyncMock(return_value=[])
 
-        # Mock Redis client
         mgr.cache.redis_client = AsyncMock()
         mgr.cache.redis_client.get = AsyncMock(return_value="val")
         mgr.cache.redis_client.set = AsyncMock()

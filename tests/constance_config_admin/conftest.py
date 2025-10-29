@@ -20,6 +20,7 @@ def admin():
     Fixture that returns a configured instance of ConstanceConfigAdmin
     with a predefined CONFIG for testing.
     """
+
     admin_instance = ConstanceConfigAdmin()
     admin_instance.CONFIG = CONFIG
     return admin_instance
@@ -31,6 +32,7 @@ def model():
     Fixture that creates a mock ConstanceConfig model instance representing
     a configuration entry in the database.
     """
+
     return ConstanceConfig(key="MAX_USERS", value="100", default_value="100", description="Maximum users")
 
 
@@ -40,6 +42,7 @@ def mock_request():
     Fixture that returns a mock Starlette Request object for simulating
     incoming HTTP requests to the admin view.
     """
+
     return Request({"type": "http", "method": "POST", "headers": {}})
 
 
@@ -49,5 +52,6 @@ def mock_set_value():
     Fixture that patches the lifespan constance_config.set_value method
     with an AsyncMock to prevent actual configuration updates.
     """
+
     with patch.object(lifespan_constance_config, "set_value", new_callable=AsyncMock) as mock_method:
         yield mock_method

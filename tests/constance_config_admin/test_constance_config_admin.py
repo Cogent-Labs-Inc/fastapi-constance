@@ -16,6 +16,7 @@ class TestConstanceConfigAdmin:
         Test that attempting to modify a readonly field ('default_value')
         raises an HTTPException with a 400 status code.
         """
+
         with pytest.raises(HTTPException) as exc_info:
             await admin.on_model_change(
                 constance_config={"key": "MAX_USERS", "default_value": "999"},
@@ -31,6 +32,7 @@ class TestConstanceConfigAdmin:
         Test that setting a value with an invalid type (e.g., non-integer for int field)
         raises an HTTPException with a 400 status code.
         """
+
         with pytest.raises(HTTPException) as exc_info:
             await admin.on_model_change(
                 constance_config={"key": "MAX_USERS", "value": "invalid_int"},
@@ -46,6 +48,7 @@ class TestConstanceConfigAdmin:
         Test that boolean fields correctly handle 'True'/'False' string inputs,
         convert them to bool types, and call set_value with correct parameters.
         """
+
         constance_config = {"key": "ENABLE_FEATURE", "value": "False"}
         model_bool = ConstanceConfig(key="ENABLE_FEATURE", value="True", default_value="True", description="Enable")
 
@@ -64,6 +67,7 @@ class TestConstanceConfigAdmin:
         Test that attempting to modify a configuration key not defined in CONFIG
         raises an HTTPException with a 400 status code.
         """
+
         model_unknown = ConstanceConfig(key="UNKNOWN_KEY", value="123", default_value="123", description="Unknown")
 
         with pytest.raises(HTTPException) as exc_info:
@@ -81,6 +85,7 @@ class TestConstanceConfigAdmin:
         Test that when a new configuration entry is created (is_created=True),
         the admin does not trigger the set_value call.
         """
+
         constance_config = {"key": "MAX_USERS", "value": "200"}
 
         await admin.on_model_change(

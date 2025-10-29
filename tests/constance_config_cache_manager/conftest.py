@@ -13,6 +13,7 @@ def reset_redis_singleton():
     Ensures that each test gets a fresh RedisClient instance
     and avoids singleton leakage across tests.
     """
+
     RedisClient._instance = None
     yield
     RedisClient._instance = None
@@ -26,6 +27,7 @@ def mock_redis_client(monkeypatch):
     This avoids real Redis connections and allows asserting
     that Redis methods like `get`, `set`, and `delete` are awaited correctly.
     """
+
     mock_client = AsyncMock()
     monkeypatch.setattr("fastapi_constance.clients.redis.RedisClient.get_client", lambda: mock_client)
     return mock_client
