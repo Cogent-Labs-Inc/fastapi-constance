@@ -5,8 +5,6 @@ import pytest
 from fastapi_constance.managers.cache import ConstanceConfigCacheManager
 from fastapi_constance.services.database_sync import ConstanceConfigDatabaseSyncService
 
-# ------------------ Fixtures ------------------
-
 
 @pytest.fixture
 def mock_cache(monkeypatch):
@@ -33,11 +31,9 @@ def mock_db_session():
     """
     mock_session = MagicMock()
 
-    # Mock result object for execute
     mock_result = MagicMock()
     mock_result.scalars.return_value.all.return_value = []
 
-    # Make execute awaitable
     mock_session.execute = AsyncMock(return_value=mock_result)
     mock_session.commit = AsyncMock()
     mock_session.merge = AsyncMock(return_value=None)
@@ -45,9 +41,6 @@ def mock_db_session():
     mock_session.delete = AsyncMock()
 
     return mock_session
-
-
-# ------------------ Database sync service tests ------------------
 
 
 @pytest.mark.asyncio
