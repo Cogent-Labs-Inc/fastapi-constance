@@ -111,25 +111,6 @@ tests/
 * Mock external dependencies (e.g., Redis, database) using `AsyncMock` or `MagicMock`.
 * Write both **positive** and **negative** test cases.
 
-Example:
-
-```python
-import pytest
-from unittest.mock import AsyncMock
-
-@pytest.mark.asyncio
-async def test_add_config_creates_entry_successfully():
-    """
-    Test that a new configuration entry is created successfully.
-    """
-    mock_cache = AsyncMock()
-    ...
-    await some_service.add_config("DEBUG", True)
-    mock_cache.set.assert_awaited_once_with("DEBUG", True)
-```
-
-  
-
 ### 🧪 Running Tests
 
 To run all tests:
