@@ -16,8 +16,8 @@ dependencies = [
     "sqlmodel>=0.0.16",
     "sqladmin>=0.20.0",
     "redis>=5.0.0",
-    "pytest>=8.4.2",
-    "pytest-asyncio>=1.2.0"
+    "pytest>=7.4.4",
+    "pytest-asyncio>=0.23.8"
 ]
 
 [project.urls]
