@@ -33,6 +33,16 @@ REDIS_URL=redis://localhost:6379
 REDIS_DB=0
 ```
 
+For **managed Redis** (e.g. AWS ElastiCache) with TLS, use `rediss://` and disable certificate verification if your provider uses self-signed certs:
+
+```bash
+REDIS_URL=rediss://your-cluster.cache.amazonaws.com:6379
+REDIS_DB=0
+REDIS_SSL_CERT_REQS=none
+```
+
+Optional: `REDIS_SOCKET_CONNECT_TIMEOUT` (seconds) if you need a longer connection timeout for remote Redis.
+
 This ensures all workers share the same configuration state in Redis.
 
 ## 📦 Installation
